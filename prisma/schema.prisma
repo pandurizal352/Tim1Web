@@ -1,0 +1,89 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+
+model User {
+  id         Int       @id @default(autoincrement())
+  nama_institusi   String
+  email_perusahaan String
+  telpn_perusahaan String
+  password         String
+  alamat           String
+
+  // Relasi
+  peserta          Peserta[]
+
+  
+}
+
+model Peserta {
+  id          Int       @id @default(autoincrement())
+  nama_peserta String
+  email_peserta String
+  telpn_peserta Int
+  alamat        String
+
+  id_user Int?
+  user    User?    @relation(fields: [id_user], references: [id], onDelete: SetNull)
+
+  // Relasi ke bidang dan pelatihan
+  bidang     Bidang[]
+  pelatihan  Pelatihan[]
+  sertifikasi Sertifikasi[]
+
+ 
+}
+
+model Bidang {
+  id             Int       @id @default(autoincrement())
+  nama_bidang    String
+  daftar_pelatihan String?
+  id_peserta     Int?
+
+  peserta  Peserta?  @relation(fields: [id_peserta], references: [id], onDelete: SetNull)
+  pelatihan Pelatihan[]
+
+ 
+}
+
+model Pelatihan {
+  id            Int       @id @default(autoincrement())
+  biaya         Int
+  jangka_waktu  DateTime
+  nama_bidang   String
+
+  id_peserta Int?
+  id_Bidang  Int?
+
+  peserta Peserta? @relation(fields: [id_peserta], references: [id], onDelete: SetNull)
+  bidang  Bidang?  @relation(fields: [id_Bidang], references: [id], onDelete: SetNull)
+  sertifikasi Sertifikasi[]
+
+ 
+}
+
+model Sertifikasi {
+  id             Int       @id @default(autoincrement())
+  Nama_dokumen   String
+  tanggal_dan_bulan DateTime
+  id_peserta     Int
+  id_pelatihan   Int
+
+  peserta   Peserta   @relation(fields: [id_peserta], references: [id])
+  pelatihan Pelatihan @relation(fields: [id_pelatihan], references: [id])
+
+  
+}
