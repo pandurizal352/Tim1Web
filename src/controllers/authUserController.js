@@ -12,10 +12,10 @@ module.exports = {
     // POST /api/institute/register
     register: async (req, res, next) => {
         try {
-            const { email_institusi, password, nama_institusi, nomorTelepon_institusi, alamat } = req.body;
+            const { email_perusahaan, password, nama_institusi, telpn_perusahaan, alamat } = req.body;
 
             // Validasi sederhana
-            if (!email_institusi || !password || !nama_institusi) {
+            if (!email_perusahaan || !password || !nama_institusi) {
                 return res.status(400).json({ message: 'Email, password, dan nama institusi wajib diisi' });
             }
             if (password.length < 6) {
@@ -23,8 +23,8 @@ module.exports = {
             }
 
             // Cek apakah institusi sudah ada
-            const existing = await prisma.userInstitute.findUnique({
-                where: { email_institusi }
+            const existing = await prisma.user.findUnique({
+                where: { email_perusahaan }
             });
 
             if (existing) {
@@ -35,19 +35,19 @@ module.exports = {
             const hashed = await bcrypt.hash(password, SALT_ROUNDS);
 
             // Insert user institute
-            const newInstitute = await prisma.userInstitute.create({
+            const newInstitute = await prisma.user.create({
                 data: {
-                    email_institusi,
+                    email_perusahaan,
                     password: hashed,
                     nama_institusi,
-                    nomorTelepon_institusi: nomorTelepon_institusi || '',
+                    telpn_perusahaan: telpn_perusahaan || '',
                     alamat: alamat || null
                 }
             });
 
             return res.status(201).json({
                 id_user: newInstitute.id_user,
-                email_institusi: newInstitute.email_institusi,
+                email_perusahaan: newInstitute.email_perusahaan,
                 nama_institusi: newInstitute.nama_institusi
             });
         } catch (err) {
@@ -58,14 +58,14 @@ module.exports = {
     // POST /api/institute/login
     login: async (req, res, next) => {
         try {
-            const { email_institusi, password } = req.body;
-            if (!email_institusi || !password) {
+            const { email_perusahaan, password } = req.body;
+            if (!email_perusahaan || !password) {
                 return res.status(400).json({ message: 'Email dan password wajib diisi' });
             }
 
             // Ambil user institute
-            const institute = await prisma.userInstitute.findUnique({
-                where: { email_institusi }
+            const institute = await prisma.user.findUnique({
+                where: { email_perusahaan }
             });
 
             if (!institute) {
@@ -81,7 +81,7 @@ module.exports = {
             // Sign JWT
             const payload = { 
                 id_user: institute.id_user, 
-                email_institusi: institute.email_institusi 
+                email_perusahaan: institute.email_perusahaan 
             };
             const token = jwt.sign(payload, jwtSecret, { expiresIn: '24h' });
 
@@ -90,7 +90,7 @@ module.exports = {
                 token,
                 institute: {
                     id_user: institute.id_user,
-                    email_institusi: institute.email_institusi,
+                    email_perusahaan: institute.email_perusahaan,
                     nama_institusi: institute.nama_institusi
                 }
             });

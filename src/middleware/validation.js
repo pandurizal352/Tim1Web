@@ -23,8 +23,29 @@ const validationBodyPelatihan = (req, res, next) =>{
     }
 }
 
+const validationBodyPeserta = (req, res, next) => {
+    let { nama_peserta, email_peserta, telpn_peserta, alamat_peserta } = req.body;
+
+    if (nama_peserta === undefined || email_peserta === undefined || telpn_peserta === undefined || alamat_peserta === undefined) {
+        res.status(400).json({message : "all column is required"});
+    } else {
+        next();
+    }
+}
+
+const validationBodySertifikasi = (req, res, next) => {
+    let { Nama_dokumen, tanggal_dan_bulan, id_peserta, id_pelatihan } = req.body;
+
+    if (Nama_dokumen === undefined || tanggal_dan_bulan === undefined || id_peserta === undefined || id_pelatihan === undefined) {
+        res.status(400).json({message : "all column is required"});
+    } else {
+        next();
+    }
+}
 
 module.exports ={
     validationBodyBidang,
-    validationBodyPelatihan
+    validationBodyPelatihan,
+    validationBodyPeserta,
+    validationBodySertifikasi 
 }

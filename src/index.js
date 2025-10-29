@@ -14,11 +14,15 @@ app.use(express.json()); //parse JSON body
 // routes
 const bidangRoutes = require('./routes/bidangRoutes');
 const pelatihanRoutes = require('./routes/pelatihanRoutes');
+const pesertaRoutes = require('./routes/pesertaRoutes');
+const sertifikasiRoutes = require('./routes/sertifikasiRoutes');
 const authUserRoutes = require('./routes/authUserRoutes');
 
 // prefix api
 app.use('/api/bidang', bidangRoutes);
 app.use('/api/pelatihan', pelatihanRoutes);
+app.use('/api/peserta', pesertaRoutes);
+app.use('/api/sertifikasi', sertifikasiRoutes);
 app.use('/api/user', authUserRoutes);
 
 
