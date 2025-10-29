@@ -8,9 +8,97 @@ const jwtSecret = process.env.JWT_SECRET;
 if (!jwtSecret) throw new Error('JWT_SECRET belum di set');
 const SALT_ROUNDS = 10;
 
-module.exports = {
+
+const getAllUser = async (req, res) => {
+    try {
+        const semuaInstitusi = await prisma.user.findMany({
+            include: { peserta: true } // kalau ingin ambil relasi peserta juga
+        });
+        return res.json(semuaInstitusi);
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ message: 'Internal Server Error' });
+    }
+};
+
+const getAllUserById = async (req, res) => {
+    try {
+        const id = parseInt (req.params.id);
+        const userbyid = await prisma.user.findUnique({
+            where: { id },
+            include: { peserta: true } // kalau ingin ambil relasi peserta juga
+        });
+         if (!userbyid) return res.status(404).json({message : 'Peserta not found'});
+        return res.json(userbyid);
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ message: 'Internal Server Error' });
+    }
+};
+
+
+const deleteuser = async (req, res) => {
+    try {
+        const id = parseInt(req.params.id);
+
+        await prisma.user.delete({ where : { id } });
+        return res.json({ message : 'User deleted' });
+    } catch (error) {
+        console.error(error);
+        if (error.code === 'P2025') {
+            return res.status(404).json ({ message : 'User not found'});
+        }
+        return res.status(500).json ({ message : 'Internal Server Error' });
+    }
+}
+
+const updateUser = async (req, res) => {
+    try {
+        const  id  = parseInt(req.params.id); // ambil id dari URL
+        const { nama_institusi, email_perusahaan, telpn_perusahaan, alamat, password } = req.body;
+
+        // Pastikan data yang mau di-update ada di database
+        const existing = await prisma.user.findUnique({
+            where: { id }
+        });
+
+        if (!existing) {
+            return res.status(404).json({ message: 'Institusi tidak ditemukan' });
+        }
+
+        // Kalau password diisi, hash ulang
+        let hashedPassword = existing.password;
+        if (password) {
+            const bcrypt = require('bcrypt');
+            hashedPassword = await bcrypt.hash(password, 10);
+        }
+
+        // Update data institusi
+        const updated = await prisma.user.update({
+            where: { id },
+            data: {
+                nama_institusi: nama_institusi ?? existing.nama_institusi,
+                email_perusahaan: email_perusahaan ?? existing.email_perusahaan,
+                telpn_perusahaan: telpn_perusahaan ?? existing.telpn_perusahaan,
+                alamat: alamat ?? existing.alamat,
+                password: hashedPassword
+            }
+        });
+
+        return res.json({
+            message: 'Data institusi berhasil diperbarui',
+            data: updated
+        });
+
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ message: 'Internal Server Error' });
+    }
+};
+
+
     // POST /api/institute/register
-    register: async (req, res, next) => {
+   const register = async (req, res, next) => {
         try {
             const { email_perusahaan, password, nama_institusi, telpn_perusahaan, alamat } = req.body;
 
@@ -53,10 +141,10 @@ module.exports = {
         } catch (err) {
             next(err);
         }
-    },
+    }
 
     // POST /api/institute/login
-    login: async (req, res, next) => {
+ const login = async (req, res, next) => {
         try {
             const { email_perusahaan, password } = req.body;
             if (!email_perusahaan || !password) {
@@ -98,4 +186,13 @@ module.exports = {
             next(err);
         }
     }
+
+module.exports = { 
+    getAllUser,
+    getAllUserById,
+    deleteuser,
+    updateUser,
+    register,    
+    login,
+
 };
