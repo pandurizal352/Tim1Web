@@ -34,18 +34,30 @@ const validationBodyPeserta = (req, res, next) => {
 }
 
 const validationBodySertifikasi = (req, res, next) => {
-    let { Nama_dokumen, tanggal_dan_bulan, id_peserta, id_pelatihan } = req.body;
+    let { Nama_dokumen, tanggal_dan_bulan,  id_pelatihan } = req.body;
 
-    if (Nama_dokumen === undefined || tanggal_dan_bulan === undefined || id_peserta === undefined || id_pelatihan === undefined) {
+    if (Nama_dokumen === undefined || tanggal_dan_bulan === undefined  || id_pelatihan === undefined) {
         res.status(400).json({message : "all column is required"});
     } else {
         next();
     }
 }
 
+const validationBodyPesertaSertifikat = (req, res, next) => {
+    let {id_peserta } = req.body;
+
+    if (id_peserta === undefined ) {
+        res.status(400).json({message : "minimal harus isi id_peserta"});
+    } else {
+        next();
+    }
+}
+
+
 module.exports ={
     validationBodyBidang,
     validationBodyPelatihan,
     validationBodyPeserta,
-    validationBodySertifikasi 
+    validationBodySertifikasi,
+    validationBodyPesertaSertifikat
 }

@@ -6,7 +6,14 @@ const prisma = require('../config/utils');
 const getAllPeserta = async (req, res) => {
     try {
         const paraPeserta = await prisma.peserta.findMany({
-            include : { pelatihan : true, bidang : true, sertifikasi : true } 
+            include : { 
+                pelatihan : true, bidang : true,  
+        pesertaSertifikat: {
+          include: {
+            sertifikat: true, // ambil data sertifikasi dari relasi perantara
+          },
+            },
+              },
         });
         return res.json(paraPeserta);
     } catch (error) {
@@ -20,7 +27,14 @@ const getPesertaById = async (req, res) => {
         const id = parseInt (req.params.id);
         const peserta = await prisma.peserta.findUnique({
             where: { id },
-            include : { pelatihan : true, bidang : true, sertifikasi : true }
+            include : { pelatihan : true, bidang : true, 
+                 pesertaSertifikat: {
+          include: {
+            sertifikat: true, // ambil data sertifikasi dari relasi perantara
+          },
+
+            },
+            },
         });
 
         if (!peserta) return res.status(404).json({message : 'Peserta not found'});
@@ -34,9 +48,9 @@ const getPesertaById = async (req, res) => {
 // CREATE
 const createPeserta = async (req, res) => {
     try {
-        const { nama_peserta, email_peserta, telpn_peserta, alamat_peserta } = req.body;
+        const { nama_peserta, email_peserta, telpn_peserta, alamat_peserta, id_user } = req.body;
         const peserta = await prisma.peserta.create({
-            data : { nama_peserta, email_peserta, telpn_peserta, alamat_peserta }
+            data : { nama_peserta, email_peserta, telpn_peserta, alamat_peserta, id_user  }
         });
         return res.status(201).json(peserta);
     } catch (error) {
@@ -49,11 +63,11 @@ const createPeserta = async (req, res) => {
 const updatePeserta = async (req, res) => {
     try {
         const id = parseInt (req.params.id);
-        const { nama_peserta, email_peserta, telpn_peserta, alamat_peserta } = req.body;
+        const { nama_peserta, email_peserta, telpn_peserta, alamat_peserta, id_user } = req.body;
 
         const peserta = await prisma.peserta.update({
             where : { id },
-            data: { nama_peserta, email_peserta, telpn_peserta, alamat_peserta }
+            data: { nama_peserta, email_peserta, telpn_peserta, alamat_peserta, id_user }
         });
         return res.json(peserta);
     } catch (error) {

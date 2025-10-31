@@ -17,6 +17,7 @@ const pelatihanRoutes = require('./routes/pelatihanRoutes');
 const pesertaRoutes = require('./routes/pesertaRoutes');
 const sertifikasiRoutes = require('./routes/sertifikasiRoutes');
 const authUserRoutes = require('./routes/authUserRoutes');
+const pesertaSertifRoutes = require('./routes/pesertaSertifRoutes');
 
 // prefix api
 app.use('/api/bidang', bidangRoutes);
@@ -24,6 +25,7 @@ app.use('/api/pelatihan', pelatihanRoutes);
 app.use('/api/peserta', pesertaRoutes);
 app.use('/api/sertifikasi', sertifikasiRoutes);
 app.use('/api/user', authUserRoutes);
+app.use('/api/pesertasertif', pesertaSertifRoutes);
 
 
 

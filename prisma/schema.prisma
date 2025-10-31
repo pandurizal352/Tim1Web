@@ -22,6 +22,7 @@ model User {
   telpn_perusahaan String
   password         String
   alamat           String
+  posisi           String
 
   // Relasi
   peserta          Peserta[]
@@ -34,7 +35,7 @@ model Peserta {
   nama_peserta String
   email_peserta String
   telpn_peserta Int
-  alamat        String
+  alamat_peserta        String
 
   id_user Int?
   user    User?    @relation(fields: [id_user], references: [id], onDelete: SetNull)
@@ -42,7 +43,8 @@ model Peserta {
   // Relasi ke bidang dan pelatihan
   bidang     Bidang[]
   pelatihan  Pelatihan[]
-  sertifikasi Sertifikasi[]
+  
+  pesertaSertifikat PesertaSertifikat[]
 
  
 }
@@ -79,11 +81,23 @@ model Sertifikasi {
   id             Int       @id @default(autoincrement())
   Nama_dokumen   String
   tanggal_dan_bulan DateTime
-  id_peserta     Int
+ 
   id_pelatihan   Int
 
-  peserta   Peserta   @relation(fields: [id_peserta], references: [id])
+
   pelatihan Pelatihan @relation(fields: [id_pelatihan], references: [id])
+  pesertaSertifikat PesertaSertifikat[]
+
+  
+}
+
+model PesertaSertifikat {
+  id                Int           @id @default(autoincrement())
+  id_peserta        Int
+  id_sertifikat     Int?
+
+  peserta           Peserta       @relation(fields: [id_peserta], references: [id], onDelete: Cascade)
+  sertifikat        Sertifikasi?  @relation(fields: [id_sertifikat], references: [id], onDelete: SetNull)
 
   
 }

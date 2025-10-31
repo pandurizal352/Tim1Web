@@ -100,10 +100,10 @@ const updateUser = async (req, res) => {
     // POST /api/institute/register
    const register = async (req, res, next) => {
         try {
-            const { email_perusahaan, password, nama_institusi, telpn_perusahaan, alamat } = req.body;
+            const { email_perusahaan, password, nama_institusi, telpn_perusahaan, alamat, posisi } = req.body;
 
             // Validasi sederhana
-            if (!email_perusahaan || !password || !nama_institusi) {
+            if (!email_perusahaan || !password || !nama_institusi || !posisi) {
                 return res.status(400).json({ message: 'Email, password, dan nama institusi wajib diisi' });
             }
             if (password.length < 6) {
@@ -129,7 +129,8 @@ const updateUser = async (req, res) => {
                     password: hashed,
                     nama_institusi,
                     telpn_perusahaan: telpn_perusahaan || '',
-                    alamat: alamat || null
+                    alamat: alamat || null,
+                    posisi
                 }
             });
 
