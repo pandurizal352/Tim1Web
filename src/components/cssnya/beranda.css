@@ -1,0 +1,18 @@
+/* Warna dasar untuk card */
+.card-1 {
+  background-color: #1b3c53; /* warna gelap */
+  color: #ffffff;
+}
+
+.card-2 {
+  background-color: #D2C1B6; /* warna terang */
+  color: #ffffff;
+}
+
+/* Sedikit efek hover agar terlihat interaktif */
+.card-1:hover,
+.card-2:hover {
+  transform: translateY(-5px);
+  transition: 0.3s ease;
+  opacity: 0.9;
+}
