@@ -1,0 +1,198 @@
+/* Navbar Background - Full Width */
+.custom-navbar {
+  background: linear-gradient(to right, #1B3C53, #456882);
+  z-index: 1050;
+}
+
+/* Hamburger Button */
+.navbar-toggler-custom {
+  background-color: transparent;
+  border: none;
+  padding: 0.5rem;
+  border-radius: 0.25rem;
+  transition: background-color 0.3s ease;
+}
+
+.navbar-toggler-custom:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.navbar-toggler-custom:focus {
+  box-shadow: none;
+  outline: none;
+}
+
+.menu-icon {
+  color: white;
+  display: block;
+  width: 28px;
+  height: 28px;
+}
+
+/* Search Container - Full Width */
+.search-container-full {
+  max-width: 100%;
+}
+
+.search-input-group {
+  background-color: white;
+  border: none;
+  display: flex;
+  align-items: center;
+  border-radius: 0.5rem;
+  overflow: visible;
+}
+
+.search-icon-wrapper {
+  background-color: white;
+  border: none;
+  padding: 1rem 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border-right: 1px solid #e5e7eb;
+}
+
+.search-icon {
+  color: #6c757d;
+  display: flex;
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
+/* Search Input */
+.search-input {
+  background-color: white;
+  border: none;
+  color: #495057;
+  padding: 0.75rem 1rem;
+  font-size: 0.9375rem;
+  flex: 1;
+  min-width: 0;
+  border-radius: 0 0.375rem 0.375rem 0;
+}
+
+.search-input:focus {
+  background-color: white;
+  color: #495057;
+  border: none;
+  box-shadow: none;
+  outline: none;
+}
+
+.search-input::placeholder {
+  color: #6c757d;
+}
+
+/* Right Side Buttons */
+.btn-navbar-right {
+  background-color: transparent;
+  color: white;
+  padding: 0.5rem 1.25rem;
+  border-radius: 0.375rem;
+  font-weight: 400;
+  border: none;
+  white-space: nowrap;
+  transition: background-color 0.3s ease;
+  text-decoration: none;
+}
+
+.btn-navbar-right:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: white;
+}
+
+.btn-navbar-right:focus {
+  box-shadow: none;
+  outline: none;
+}
+
+.btn-navbar-right-primary {
+  background-color: #0066FF;
+  color: white;
+  padding: 0.5rem 1.25rem;
+  border-radius: 0.375rem;
+  font-weight: 500;
+  border: none;
+  white-space: nowrap;
+  transition: background-color 0.3s ease;
+  text-decoration: none;
+}
+
+.btn-navbar-right-primary:hover {
+  background-color: #0052CC;
+  color: white;
+}
+
+.btn-navbar-right-primary:focus {
+  box-shadow: none;
+  outline: none;
+}
+
+/* Dropdown Menu */
+.dropdown-menu-custom {
+  background-color: white;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  overflow: hidden;
+}
+
+.menu-item {
+  padding: 0.875rem 1.25rem;
+  color: #1B3C53;
+  transition: background-color 0.2s ease;
+  cursor: pointer;
+  border: none;
+  background-color: transparent;
+  text-align: left;
+  font-weight: 400;
+  width: 100%;
+}
+
+.menu-item:hover {
+  background-color: #F9F3EF;
+  color: #1B3C53;
+}
+
+/* Responsive */
+@media (max-width: 991.98px) {
+  .btn-navbar-right,
+  .btn-navbar-right-primary {
+    padding: 0.4rem 1rem;
+    font-size: 0.875rem;
+  }
+}
+
+@media (max-width: 767.98px) {
+  .btn-navbar-right,
+  .btn-navbar-right-primary {
+    padding: 0.375rem 0.75rem;
+    font-size: 0.8125rem;
+  }
+}
+
+@media (max-width: 575.98px) {
+  .navbar-toggler-custom {
+    padding: 0.375rem;
+  }
+  
+  .menu-icon {
+    width: 24px;
+    height: 24px;
+  }
+  
+  .btn-navbar-right {
+    display: none;
+  }
+  
+  .btn-navbar-right-primary {
+    padding: 0.375rem 0.75rem;
+    font-size: 0.75rem;
+  }
+  
+  .search-input {
+    font-size: 0.875rem;
+  }
+}
