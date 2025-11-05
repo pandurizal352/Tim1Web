@@ -16,88 +16,80 @@ datasource db {
 
 
 model User {
-  id         Int       @id @default(autoincrement())
-  nama_institusi   String
-  email_perusahaan String @unique
-  telpn_perusahaan String
-  password         String
-  alamat           String
-  posisi           String
+  id                Int        @id @default(autoincrement())
+  nama_institusi    String
+  email_perusahaan  String     @unique
+  telpn_perusahaan  Int      
+  password          String
+  alamat            String
+  posisi            String
+  status_pembayaran String?
+  bukti_pembayaran  String?
 
-  // Relasi
-  peserta          Peserta[]
-
-  
+  peserta           Peserta[]
 }
 
 model Peserta {
-  id          Int       @id @default(autoincrement())
-  nama_peserta String
-  email_peserta String
-  telpn_peserta Int
-  alamat_peserta        String
+  id              Int       @id @default(autoincrement())
+  nama_peserta    String
+  email_peserta   String
+  telpn_peserta   String
+  alamat_peserta  String
 
-  id_user Int?
-  user    User?    @relation(fields: [id_user], references: [id], onDelete: SetNull)
+  // Relasi ke User
+  id_user         Int?
+  user            User?     @relation(fields: [id_user], references: [id], onDelete: SetNull)
 
-  // Relasi ke bidang dan pelatihan
-  bidang     Bidang[]
-  pelatihan  Pelatihan[]
-  
+  // Relasi ke Bidang
+  id_bidang       Int?
+  bidang          Bidang?   @relation(fields: [id_bidang], references: [id], onDelete: SetNull)
+
+  // Relasi ke Pelatihan (1 peserta = 1 pelatihan)
+  id_pelatihan    Int?
+  pelatihan       Pelatihan? @relation(fields: [id_pelatihan], references: [id], onDelete: SetNull)
+
+  // Sertifikat (via tabel penghubung)
   pesertaSertifikat PesertaSertifikat[]
-
- 
 }
 
 model Bidang {
-  id             Int       @id @default(autoincrement())
-  nama_bidang    String
-  daftar_pelatihan String?
-  id_peserta     Int?
+  id               Int          @id @default(autoincrement())
+  nama_bidang      String
+  // daftar_pelatihan String? //udah 
 
-  peserta  Peserta?  @relation(fields: [id_peserta], references: [id], onDelete: SetNull)
-  pelatihan Pelatihan[]
-
- 
+  peserta          Peserta[]
+  pelatihan        Pelatihan[]
 }
 
 model Pelatihan {
-  id            Int       @id @default(autoincrement())
-  biaya         Int
-  jangka_waktu  DateTime
-  nama_bidang   String
+  id             Int          @id @default(autoincrement())
+  biaya          Int
+  jangka_waktu   String // udah
+  nama_pelatihan String
 
-  id_peserta Int?
-  id_Bidang  Int?
+  id_bidang      Int?
+  bidang         Bidang?      @relation(fields: [id_bidang], references: [id], onDelete: SetNull)
 
-  peserta Peserta? @relation(fields: [id_peserta], references: [id], onDelete: SetNull)
-  bidang  Bidang?  @relation(fields: [id_Bidang], references: [id], onDelete: SetNull)
-  sertifikasi Sertifikasi[]
-
- 
+  peserta        Peserta[]
+  sertifikasi    Sertifikasi[]
 }
 
 model Sertifikasi {
-  id             Int       @id @default(autoincrement())
-  Nama_dokumen   String
-  tanggal_dan_bulan DateTime
- 
-  id_pelatihan   Int
+  id                 Int                 @id @default(autoincrement())
+  nama_dokumen       String
+  tanggal_dan_bulan  DateTime
 
+  id_pelatihan       Int
+  pelatihan          Pelatihan          @relation(fields: [id_pelatihan], references: [id])
 
-  pelatihan Pelatihan @relation(fields: [id_pelatihan], references: [id])
-  pesertaSertifikat PesertaSertifikat[]
-
-  
+  pesertaSertifikat  PesertaSertifikat[]
 }
 
 model PesertaSertifikat {
-  id                Int           @id @default(autoincrement())
-  id_peserta        Int
-  id_sertifikat     Int?
+  id              Int           @id @default(autoincrement())
+  id_peserta      Int
+  id_sertifikat   Int?
 
-  peserta           Peserta       @relation(fields: [id_peserta], references: [id], onDelete: Cascade)
-  sertifikat        Sertifikasi?  @relation(fields: [id_sertifikat], references: [id], onDelete: SetNull)
-
-  
+  peserta         Peserta       @relation(fields: [id_peserta], references: [id], onDelete: Cascade)
+  sertifikat      Sertifikasi?  @relation(fields: [id_sertifikat], references: [id], onDelete: SetNull)
 }
