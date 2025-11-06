@@ -65,7 +65,7 @@ const Footer = () => {
 
         <hr className="border-light my-4" />
         <p className="text-center small text-light mb-0">
-          © 2025 Geo Mandiri Group — Created with 💙 by Team 1
+          © 2025 Geo Mandiri Group — Created with 💙 by Boost Performance
         </p>
       </div>
     </footer>

@@ -123,7 +123,7 @@ export default function Beranda() {
         <div className="col-md-4 col-sm-6">
           <div className="card text-white shadow card-2">
             <div className="card-body text-center">
-              <h2 className="card-title fw-bold">{pesertaCount}</h2>
+              <h2 className="card-title fw-bold">{pesertaSertifCount}</h2>
               <p className="card-text">
                 Peserta yang sudah mempunyai sertifikat
               </p>

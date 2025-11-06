@@ -1,0 +1,242 @@
+.participant-search-wrapper {
+  width: 100vw;
+  min-height: calc(100vh - 80px);
+  padding: 0;
+  margin: 0;
+  background-color: #F9F3EF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.full-width-container {
+  width: 100%;
+  max-width: 100%;
+  padding: 2rem;
+  margin: 0;
+}
+
+.search-card {
+  border-radius: 12px;
+  border: none;
+  box-shadow: 0 4px 12px rgba(27, 60, 83, 0.1);
+  background: white;
+  width: 100%;
+}
+
+.search-header {
+  background: linear-gradient(135deg, #1B3C53 0%, #456882 100%);
+  color: white;
+  padding: 1.5rem;
+  border-radius: 12px 12px 0 0;
+  border: none;
+}
+
+.search-header h4 {
+  color: white;
+  font-weight: 600;
+  margin: 0;
+}
+
+.search-body {
+  padding: 2rem;
+  background-color: white;
+}
+
+.search-input-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.search-input {
+  padding: 0.75rem 1rem;
+  border: 2px solid #D2C1B6;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  background-color: #F9F3EF;
+  width: 100%;
+}
+
+.search-input:focus {
+  border-color: #456882;
+  box-shadow: 0 0 0 3px rgba(69, 104, 130, 0.15);
+  outline: none;
+  background-color: white;
+}
+
+.search-input::placeholder {
+  color: #456882;
+  opacity: 0.6;
+}
+
+.search-button {
+  background: linear-gradient(135deg, #1B3C53 0%, #456882 100%);
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  white-space: nowrap;
+}
+
+.search-button:hover {
+  background: linear-gradient(135deg, #456882 0%, #1B3C53 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(27, 60, 83, 0.3);
+}
+
+.search-button:active {
+  transform: translateY(0);
+}
+
+.history-dropdown {
+  position: absolute;
+  top: calc(100% + 0.5rem);
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  border: 2px solid #D2C1B6;
+  box-shadow: 0 4px 16px rgba(27, 60, 83, 0.15);
+  border-radius: 8px;
+  overflow: hidden;
+  background-color: white;
+}
+
+.history-header {
+  background: #F9F3EF;
+  border-bottom: 2px solid #D2C1B6;
+  padding: 0.75rem 1rem;
+}
+
+.history-title {
+  color: #1B3C53;
+  font-weight: 600;
+}
+
+.clear-history-btn {
+  color: #456882;
+  text-decoration: none;
+  padding: 0;
+  font-size: 0.875rem;
+  transition: all 0.2s ease;
+}
+
+.clear-history-btn:hover {
+  color: #1B3C53;
+  text-decoration: underline;
+}
+
+.history-list {
+  max-height: 300px;
+  overflow-y: auto;
+  background-color: white;
+}
+
+.history-list::-webkit-scrollbar {
+  width: 8px;
+}
+
+.history-list::-webkit-scrollbar-track {
+  background: #F9F3EF;
+}
+
+.history-list::-webkit-scrollbar-thumb {
+  background: #D2C1B6;
+  border-radius: 4px;
+}
+
+.history-list::-webkit-scrollbar-thumb:hover {
+  background: #456882;
+}
+
+.history-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: none;
+  background-color: white;
+}
+
+.history-item:hover {
+  background-color: #F9F3EF;
+  border-left: 3px solid #456882;
+}
+
+.history-text {
+  color: #1B3C53;
+  font-size: 0.95rem;
+  transition: color 0.2s ease;
+}
+
+.history-item:hover .history-text {
+  color: #456882;
+  font-weight: 500;
+}
+
+.remove-history-btn {
+  padding: 0.25rem;
+  opacity: 0;
+  transition: all 0.2s ease;
+  background: transparent;
+  border: none;
+}
+
+.history-item:hover .remove-history-btn {
+  opacity: 1;
+}
+
+.remove-history-btn:hover {
+  background-color: transparent;
+  transform: scale(1.1);
+}
+
+.remove-history-btn svg {
+  transition: color 0.2s ease;
+}
+
+.remove-history-btn:hover svg {
+  color: #1B3C53 !important;
+}
+
+@media (max-width: 768px) {
+  .full-width-container {
+    padding: 1rem;
+  }
+  
+  .search-body {
+    padding: 1.5rem;
+  }
+  
+  .search-header {
+    padding: 1rem;
+  }
+  
+  .search-input {
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .participant-search-wrapper {
+    padding: 0;
+  }
+  
+  .full-width-container {
+    padding: 0.5rem;
+  }
+  
+  .search-body {
+    padding: 1rem;
+  }
+  
+  .search-button {
+    padding: 0.75rem 1rem;
+  }
+}

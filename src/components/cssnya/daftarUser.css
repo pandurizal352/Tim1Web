@@ -1,0 +1,161 @@
+/* WRAPPER */
+.delivery-wrapper {
+  min-height: 100vh;
+
+  display: flex;
+  align-items: center;
+  padding: 40px 20px;
+}
+
+/* CONTAINER UTAMA */
+.delivery-container {
+  position: relative;
+  background: linear-gradient(135deg, #1b3c53, #1488cc);
+  border-radius: 25px;
+  padding: 60px 50px;
+  min-height: 450px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  display: flex;
+  align-items: center;
+}
+
+/* ICON TRUCK */
+.truck-icon {
+  position: absolute;
+  top: 40px;
+  left: 50px;
+  color: white;
+}
+
+/* KONTEN KIRI */
+.left-content {
+  color: white;
+  max-width: 280px;
+  z-index: 1;
+}
+
+.left-content h2 {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+.welcome-text {
+  font-size: 1rem;
+  line-height: 1.5;
+  margin-bottom: 2rem;
+}
+
+/* TOMBOL GO BACK */
+.go-back-btn {
+  background-color: white;
+  color: #3a3fd9;
+  border: none;
+  border-radius: 50px;
+  padding: 10px 35px;
+  font-weight: bold;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+}
+
+.go-back-btn:hover {
+  background-color: #f0f0f0;
+  transform: scale(1.05);
+  color: #3a3fd9;
+}
+
+/* CARD KANAN (FORM) */
+.right-card {
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 58%;
+  background-color: #F9F3EF;
+  border-radius: 80px 25px 25px 80px;
+  padding: 50px 45px;
+  box-shadow: -10px 0 30px rgba(0, 0, 0, 0.3);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  color: #1b3c53;
+}
+
+.right-card h4 {
+  margin-bottom: 2rem;
+}
+
+/* FORM STYLING */
+.form-control {
+  background-color: rgba(255, 255, 255, 0.05);
+  border: 1px solid #666;
+  border-radius: 6px;
+  color: white;
+  padding: 12px 15px;
+  transition: all 0.3s ease;
+}
+
+.form-control::placeholder {
+  color: #aaa;
+}
+
+.form-control:focus {
+  background-color: rgba(255, 255, 255, 0.08);
+  border-color: #1488cc;
+  box-shadow: 0 0 8px rgba(20, 136, 204, 0.5);
+  outline: none;
+  color: white;
+}
+
+/* TOMBOL PLACE ORDER */
+.place-order-btn {
+  background-color: #0066ff;
+  border: none;
+  border-radius: 50px;
+  padding: 10px 35px;
+  font-weight: bold;
+  box-shadow: 0 5px 15px rgba(0, 102, 255, 0.4);
+  transition: all 0.3s ease;
+}
+
+.place-order-btn:hover {
+  background-color: #0052cc;
+  transform: translateY(-2px);
+}
+
+
+
+/* RESPONSIVE */
+@media (max-width: 992px) {
+  .delivery-container {
+    flex-direction: column;
+    padding: 40px 30px 320px;
+    text-align: center;
+  }
+
+  .truck-icon {
+    position: static;
+    margin-bottom: 20px;
+  }
+
+  .left-content {
+    max-width: 100%;
+    margin-bottom: 30px;
+  }
+
+  .right-card {
+    position: static;
+    width: 100%;
+    border-radius: 25px;
+    margin-top: -280px;
+  }
+}
+
+@media (max-width: 576px) {
+  .delivery-container {
+    padding: 30px 20px 300px;
+  }
+
+  .right-card {
+    padding: 30px 25px;
+  }
+}

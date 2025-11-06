@@ -8,7 +8,7 @@ export default function Bidang() {
   const [bidangs, setBidangs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [nama_bidang, setNama_bidang] = useState("");
-  const [daftar_pelatihan, setDaftar_pelatihan] = useState("");
+  // const [daftar_pelatihan, setDaftar_pelatihan] = useState("");
   const navigate = useNavigate();
 
   const fetchData = () => {
@@ -53,11 +53,11 @@ export default function Bidang() {
     axios
       .post("http://localhost:3000/api/bidang", {
         nama_bidang,
-        daftar_pelatihan,
+        // daftar_pelatihan,
       })
       .then(() => {
         setNama_bidang("");
-        setDaftar_pelatihan("");
+        // setDaftar_pelatihan("");
         fetchData();
       })
       .catch((error) => {
@@ -83,7 +83,7 @@ export default function Bidang() {
     <>
       <div className="container mt-4 bidang-container">
         <div className="card">
-          <h1 className="card-header text-white  fw-bold fs-4 bidang-header">Data Bidang</h1>
+          <h1 className="card-header text-white fw-bold fs-4 bidang-header">Data Bidang</h1>
           <div className="card-body">
             <button
               className="btn btn-primary mb-3"
@@ -94,21 +94,21 @@ export default function Bidang() {
             </button>
 
             <table className="table table-striped table-hover">
-              <thead className="table-dark">
+              <thead className="table-dark text-center">
                 <tr>
                   <th>No</th>
                   <th>Nama Bidang</th>
-                  <th>Daftar Pelatihan</th>
+                  {/* <th>Daftar Pelatihan</th> */}
                   {/* <th>Nama Peserta</th> */}
                   <th>Aksi</th>
                 </tr>
               </thead>
               <tbody>
                 {bidangs.map((bidang, index) => (
-                  <tr key={bidang.id}>
+                  <tr key={bidang.id} className="text-center">
                     <td>{index + 1}</td>
                     <td>{bidang.nama_bidang}</td>
-                    <td>{bidang.daftar_pelatihan || "-"}</td>
+                    {/* <td>{bidang.daftar_pelatihan || "-"}</td> */}
                     {/* <td>{bidang.peserta?.nama_peserta || "-"}</td> */}
                     <td>
                       <button
@@ -145,7 +145,7 @@ export default function Bidang() {
                 <div className="form-floating mb-3">
                   <input
                     type="text"
-                    className="form-control"
+                    className="form-control text-black"
                     id="nama_bidang"
                     placeholder="Nama Bidang"
                     value={nama_bidang}
@@ -154,17 +154,17 @@ export default function Bidang() {
                   />
                   <label htmlFor="nama_bidang">Nama Bidang</label>
                 </div>
-                <div className="form-floating mb-3">
+                {/* <div className="form-floating mb-3">
                   <input
                     type="text"
-                    className="form-control"
+                    className="form-control text-black"
                     id="daftar_pelatihan"
                     placeholder="Daftar Pelatihan"
                     value={daftar_pelatihan}
                     onChange={(e) => setDaftar_pelatihan(e.target.value)}
                   />
                   <label htmlFor="daftar_pelatihan">Daftar Pelatihan</label>
-                </div>
+                </div> */}
               </div>
               <div className="modal-footer">
                 <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">

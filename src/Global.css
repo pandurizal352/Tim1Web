@@ -1,0 +1,110 @@
+nav {
+  background-color: rgb(27, 60, 83);
+}
+
+.navText {
+  color: rgb(249, 243, 239);
+}
+
+.heightCar {
+  height: 500px;
+  object-fit: cover;
+}
+
+.bgFirst {
+  background-color: white;
+  min-height: 450px;
+}
+
+.bgSecond {
+  background-color: rgb(27, 60, 83);
+  min-height: 450px;
+}
+/* 
+.bgThird {
+  background-color: rgb(249, 243, 239);
+  min-height: 450px;
+} */
+
+.long {
+  height: 100%;
+  min-height: 300px;
+  max-height: 300px;
+  min-width: 18rem;
+  max-width: 18rem;
+}
+
+.short {
+  height: 100%;
+  min-height: 130px;
+  max-height: 130px;
+  min-width: 18rem;
+  max-width: 18rem;
+}
+
+.picTest {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+}
+
+.titleColorOne {
+  color: rgb(249, 243, 239);
+}
+
+.titleColorTwo {
+  color: rgb(27, 60, 83);
+}
+
+.scrolling {
+  scroll-behavior: "smooth";
+  scrollbar-width: "none";
+}
+
+.bgCard {
+  background-color: rgb(249, 243, 239);
+}
+
+.quote {
+  max-width: 65%;
+  background-color: rgb(249, 243, 239);
+}
+
+.arrow {
+  color: rgb(249, 243, 239);
+  width: 28px;
+  height: 28px;
+}
+
+.bgHead {
+  background-color: rgb(210, 193, 182);
+}
+
+.arrowLeft {
+  padding-left: 23%;
+}
+
+.arrowRight {
+  padding-right: 23%;
+}
+
+.pad {
+  padding-left: 13%;
+}
+
+.pic {
+  max-width: 200px;
+  max-height: 100px;
+  padding: 2px;
+}
+
+.mitra {
+  border: "2px solid rgb(210, 193, 182)";
+  border-radius: "8px";
+  height: "150px";
+}
+
+/* .cardAlur {
+  width: "14rem";
+  flex-shrink: 0;
+} */

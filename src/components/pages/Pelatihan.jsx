@@ -6,14 +6,14 @@ import "../cssnya/bidang.css";
 
 export default function Pelatihan() {
   const [pelatihans, setPelatihans] = useState([]);
-  const [pesertas, setPesertas] = useState([]);
+  // const [pesertas, setPesertas] = useState([]);
   const [bidangs, setBidangs] = useState([]);
   const [loading, setLoading] = useState(true);
 
   const [biaya, setBiaya] = useState("");
   const [jangka_waktu, setJangka_waktu] = useState("");
-  const [nama_bidang, setNama_bidang] = useState("");
-  const [id_peserta, setPeserta] = useState("");
+  const [nama_pelatihan, setNama_pelatihan] = useState("");
+  // const [id_peserta, setPeserta] = useState("");
   const [id_Bidang, setId_Bidang] = useState("");
 
   const navigate = useNavigate();
@@ -26,12 +26,12 @@ export default function Pelatihan() {
       .finally(() => setLoading(false));
   };
 
-  const fetchPeserta = () => {
-    axios
-      .get("http://localhost:3000/api/Peserta")
-      .then((res) => setPesertas(res.data))
-      .catch((err) => console.log(err));
-  };
+  // const fetchPeserta = () => {
+  //   axios
+  //     .get("http://localhost:3000/api/Peserta")
+  //     .then((res) => setPesertas(res.data))
+  //     .catch((err) => console.log(err));
+  // };
 
   const fetchBidang = () => {
     axios
@@ -42,7 +42,7 @@ export default function Pelatihan() {
 
   useEffect(() => {
     fetchData();
-    fetchPeserta();
+    // fetchPeserta();
     fetchBidang();
   }, []);
 
@@ -60,17 +60,17 @@ export default function Pelatihan() {
     e.preventDefault();
     axios
       .post("http://localhost:3000/api/Pelatihan", {
+        nama_pelatihan,
         biaya: parseInt(biaya),
         jangka_waktu,
-        nama_bidang,
-        id_peserta: id_peserta || null,
-        id_Bidang: id_Bidang || null,
+        // id_peserta: id_peserta || null,
+        id_bidang: id_Bidang || null,
       })
       .then(() => {
         setBiaya("");
         setJangka_waktu("");
-        setNama_bidang("");
-        setPeserta("");
+        setNama_pelatihan("");
+        // setPeserta("");
         setId_Bidang("");
         fetchData();
       })
@@ -108,12 +108,12 @@ export default function Pelatihan() {
             </button>
 
             <table className="table table-striped table-hover">
-              <thead className="table-dark">
+              <thead className="table-dark text-center">
                 <tr>
                   <th>No</th>
+                  <th>Nama Pelatihan</th>
                   <th>Biaya</th>
                   <th>Jangka Waktu</th>
-                  <th>Nama Bidang</th>
                   <th>Bidang Terkait</th>
                   {/* <th>Peserta</th> */}
                   <th>Aksi</th>
@@ -121,11 +121,11 @@ export default function Pelatihan() {
               </thead>
               <tbody>
                 {pelatihans.map((pelatihan, index) => (
-                  <tr key={pelatihan.id}>
+                  <tr key={pelatihan.id} className="text-center">
                     <td>{index + 1}</td>
-                    <td>{pelatihan.biaya}</td>
-                    <td>{new Date(pelatihan.jangka_waktu).toLocaleDateString()}</td>
-                    <td>{pelatihan.nama_bidang}</td>
+                    <td>{pelatihan.nama_pelatihan}</td>
+                    <td>Rp. {pelatihan.biaya.toLocaleString("id-ID")}</td>
+                    <td>{pelatihan.jangka_waktu}</td>
                     <td>{pelatihan.bidang?.nama_bidang || "-"}</td>
                     {/* <td>{pelatihan.peserta?.nama_peserta || "-"}</td> */}
                     <td>
@@ -162,8 +162,21 @@ export default function Pelatihan() {
               <div className="modal-body">
                 <div className="form-floating mb-3">
                   <input
+                    type="text"
+                    className="form-control text-black"
+                    id="nama_pelatihan"
+                    placeholder="Nama Bidang"
+                    value={nama_pelatihan}
+                    onChange={(e) => setNama_pelatihan(e.target.value)}
+                    required
+                  />
+                  <label htmlFor="nama_pelatihan">Nama Pelatihan</label>
+                </div>
+
+                <div className="form-floating mb-3">
+                  <input
                     type="number"
-                    className="form-control"
+                    className="form-control text-black"
                     id="biaya"
                     placeholder="Biaya"
                     value={biaya}
@@ -175,8 +188,8 @@ export default function Pelatihan() {
 
                 <div className="form-floating mb-3">
                   <input
-                    type="date"
-                    className="form-control"
+                    type="string"
+                    className="form-control text-black"
                     id="jangka_waktu"
                     value={jangka_waktu}
                     onChange={(e) => setJangka_waktu(e.target.value)}
@@ -185,20 +198,7 @@ export default function Pelatihan() {
                   <label htmlFor="jangka_waktu">Jangka Waktu</label>
                 </div>
 
-                <div className="form-floating mb-3">
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="nama_bidang"
-                    placeholder="Nama Bidang"
-                    value={nama_bidang}
-                    onChange={(e) => setNama_bidang(e.target.value)}
-                    required
-                  />
-                  <label htmlFor="nama_bidang">Nama Bidang</label>
-                </div>
-
-                <div className="form-floating mb-3">
+                {/* <div className="form-floating mb-3">
                   <select
                     className="form-select"
                     id="id_peserta"
@@ -213,7 +213,7 @@ export default function Pelatihan() {
                     ))}
                   </select>
                   <label htmlFor="id_peserta">Peserta</label>
-                </div>
+                </div> */}
 
                 <div className="form-floating mb-3">
                   <select
