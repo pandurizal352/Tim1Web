@@ -7,6 +7,7 @@ CREATE TABLE `User` (
     `password` VARCHAR(191) NOT NULL,
     `alamat` VARCHAR(191) NOT NULL,
     `posisi` VARCHAR(191) NOT NULL,
+    `status_pembayaran` VARCHAR(191) NULL,
     `bukti_pembayaran` VARCHAR(191) NULL,
 
     UNIQUE INDEX `User_email_perusahaan_key`(`email_perusahaan`),
@@ -18,7 +19,7 @@ CREATE TABLE `Peserta` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `nama_peserta` VARCHAR(191) NOT NULL,
     `email_peserta` VARCHAR(191) NOT NULL,
-    `telpn_peserta` INTEGER NOT NULL,
+    `telpn_peserta` VARCHAR(191) NOT NULL,
     `alamat_peserta` VARCHAR(191) NOT NULL,
     `id_user` INTEGER NULL,
     `id_bidang` INTEGER NULL,

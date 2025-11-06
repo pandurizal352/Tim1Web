@@ -107,7 +107,7 @@ const updatePelatihan = async (req, res) => {
 
     const data = {
       ...(biaya && { biaya: parseInt(biaya) }),
-      ...(date && { jangka_waktu }),
+      ...(jangka_waktu && { jangka_waktu }),
       ...(nama_pelatihan && { nama_pelatihan }),
     };
 

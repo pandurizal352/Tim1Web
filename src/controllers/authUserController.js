@@ -91,9 +91,7 @@ const updateUser = async (req, res) => {
       data: {
         nama_institusi: nama_institusi ?? existing.nama_institusi,
         email_perusahaan: email_perusahaan ?? existing.email_perusahaan,
-        telpn_perusahaan: telpn_perusahaan
-          ? parseInt(telpn_perusahaan)
-          : existing.telpn_perusahaan,
+        telpn_perusahaan: telpn_perusahaan ?? existing.telpn_perusahaan,
         alamat: alamat ?? existing.alamat,
         password: hashedPassword,
         status_pembayaran: status_pembayaran ?? existing.status_pembayaran,
@@ -243,15 +241,15 @@ const updateUser = async (req, res) => {
                     email_perusahaan,
                     password: hashed,
                     nama_institusi,
-                    telpn_perusahaan: telpn_perusahaan ? parseInt(telpn_perusahaan) : 0,
-                    // telpn_perusahaan: telpn_perusahaan || '',
+                    // telpn_perusahaan: telpn_perusahaan ? Number(telpn_perusahaan) : 0,
+                    telpn_perusahaan: telpn_perusahaan || '',
                     alamat: alamat || null,
                     posisi
                 }
             });
 
             return res.status(201).json({
-                id_user: newInstitute.id_user,
+                id: newInstitute.id,
                 email_perusahaan: newInstitute.email_perusahaan,
                 nama_institusi: newInstitute.nama_institusi
             });

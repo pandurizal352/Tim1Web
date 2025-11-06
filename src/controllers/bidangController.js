@@ -39,7 +39,7 @@ const getBidangById = async (req, res) => {
 // CREATE
 const createBidang = async (req, res) => {
   try {
-    const { nama_bidang} = req.body;
+    const { nama_bidang } = req.body;
 
     // siapkan data dasar
     const data = {
