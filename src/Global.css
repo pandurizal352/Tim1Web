@@ -6,6 +6,10 @@ nav {
   color: rgb(249, 243, 239);
 }
 
+thead {
+  background-color: rgb(27, 60, 83);
+}
+
 .heightCar {
   height: 500px;
   object-fit: cover;

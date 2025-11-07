@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import "../Global.css";
 import geomandiri from "../images/geomandiri.png";
 import { FaUser } from "react-icons/fa";
@@ -23,9 +23,10 @@ export default function NavbarUser() {
     navigate("/login");
   };
 
+  const location = useLocation();
 
   return (
-    <nav className="navbar navbar-expand-lg d-grid gap-0 row-gap-3 mb-3 pb-3 fixed-top">
+    <nav className="navbar navbar-expand-lg d-grid gap-0 row-gap-3">
       <div className="container-fluid">
         <a className="navbar-brand" href="#">
           <img src={geomandiri} alt="Bootstrap" width="200" height="50" />
@@ -44,8 +45,9 @@ export default function NavbarUser() {
         <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
           <div className="navbar-nav">
             <Link
-              className="nav-link navText ps-5 pe-3"
-              aria-current="page"
+              className={`nav-link navText ps-5 pe-3 ${
+                location.pathname === "/" ? "text-light fw-bold" : ""
+              }`}
               to="/"
             >
               Beranda
@@ -54,22 +56,36 @@ export default function NavbarUser() {
               Bidang
             </Link> */}
             <Link
-              className="nav-link navText ps-5 pe-3"
-              aria-current="page"
+              className={`nav-link navText ps-5 pe-3 ${
+                location.pathname === "/pesertaUser" ? "text-light fw-bold" : ""
+              }`}
               to="/pesertaUser"
             >
               Peserta
             </Link>
-            <Link className="nav-link navText ps-5 pe-3" to="/tentang-kami">
-              Tentang  kami
+            <Link
+              className={`nav-link navText ps-5 pe-3 ${
+                location.pathname === "/tentang-kami"
+                  ? "text-light fw-bold"
+                  : ""
+              }`}
+              to="/tentang-kami"
+            >
+              Tentang Kami
             </Link>
-            {/* <Link className="nav-link navText ps-5 pe-3" to="/daftar">
+            <Link
+              className={`nav-link navText ps-5 pe-3 ${
+                location.pathname === "/form-peserta"
+                  ? "text-light fw-bold"
+                  : ""
+              }`}
+              to="/form-peserta"
+            >
               Daftar
-            </Link> */}
-           
+            </Link>
           </div>
 
-           {/* Login / Logout */}
+          {/* Login / Logout */}
           <div className="ms-auto d-flex align-items-center gap-3">
             {!isLoggedIn ? (
               <Link
@@ -78,18 +94,15 @@ export default function NavbarUser() {
               >
                 <FaUser className="me-1" /> Login
               </Link>
-
-           
             ) : (
               <button
                 onClick={handleLogout}
-                className="btn btn-outline-danger btn-sm"
+                className="btn btn-outline-danger btn-sm ms-auto position-absolute top-0 end-0 mt-3 me-3 pe-3"
               >
                 Logout
               </button>
             )}
           </div>
-
         </div>
       </div>
     </nav>

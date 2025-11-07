@@ -10,6 +10,7 @@ import Beranda from "./components/pages/Beranda";
 import Bidang from "./components/pages/Bidang";
 import Pelatihan from "./components/pages/Pelatihan";
 import PesertaAdmin from "./components/pages/pesertaAdmin.jsx"
+import FormPeserta from "./components/pages/formPesertaUser.jsx";
 import EditBidang from "./components/pages/EditBidang";
 import EditPelatihan from "./components/pages/EditPelatihan";
 import EditPesertaAdmin from "./components/pages/EditPesertaAdmin.jsx";
@@ -64,6 +65,7 @@ export default function App() {
         <Route path="/tentang-kami" element={<TentangKami />} />
          <Route path="/daftar" element={<DaftarUser />} />
         <Route path="/" element={<LandingPage />} />
+        <Route path="/form-peserta" element={<FormPeserta />} />
 
         <Route
           path="/admin"

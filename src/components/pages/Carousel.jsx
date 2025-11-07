@@ -7,7 +7,7 @@ export default function Carousel() {
     <>
       <div
         id="carouselExampleInterval"
-        className="carousel slide mb-2 mt-5 pt-5"
+        className="carousel slide mb-2"
         data-bs-ride="carousel"
       >
         <div className="carousel-inner">
