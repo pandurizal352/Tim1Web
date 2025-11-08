@@ -18,7 +18,7 @@ export default function EditSiswa(){
       .put(`http://localhost:3000/api/bidang/${id}`,
       {
           nama_bidang: nama_bidang,
-        daftar_pelatihan: daftar_pelatihan,
+        // daftar_pelatihan: daftar_pelatihan,
       }
     )
       // .then((response) => {
@@ -58,7 +58,7 @@ export default function EditSiswa(){
         // console.log(response.data);
         const myData = response.data;
         setNama_bidang(myData['nama_bidang'])
-        setDaftar_pelatihan(myData['daftar_pelatihan'])
+        // setDaftar_pelatihan(myData['daftar_pelatihan'])
         
       })
       .catch((error) => {
@@ -79,7 +79,7 @@ export default function EditSiswa(){
                 <div className="form-floating mb-3">
                   <input
                     type="text"
-                    className="form-control"
+                    className="form-control text-black"
                     id="floatingInput"
                     placeholder="nama bidang"
                     value={nama_bidang}
@@ -87,7 +87,7 @@ export default function EditSiswa(){
                   ></input>
                   <label htmlFor="floatingInput">Nama bidang</label>
                 </div>
-                <div className="form-floating mb-3">
+                {/* <div className="form-floating mb-3">
                   <input
                     type="text"
                     className="form-control"
@@ -97,7 +97,7 @@ export default function EditSiswa(){
                     onChange={(e) => setDaftar_pelatihan(e.target.value)}
                   ></input>
                   <label htmlFor="floatingEmail">Daftar pelatihan</label>
-                </div>
+                </div> */}
              
                 <button type="submit" className="btn btn-primary col-12"> simpan</button>
               </form>

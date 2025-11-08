@@ -8,7 +8,8 @@ export default function Bidang() {
   const [bidangs, setBidangs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [nama_bidang, setNama_bidang] = useState("");
-  const [daftar_pelatihan, setDaftar_pelatihan] = useState("");
+   const [selectedBidang, setSelectedBidang] = useState(null);
+  // const [daftar_pelatihan, setDaftar_pelatihan] = useState("");
   const navigate = useNavigate();
 
   const fetchData = () => {
@@ -31,7 +32,9 @@ export default function Bidang() {
   }, []);
 
   const handleDelete = (id) => {
-    const confirmDelete = window.confirm("Apakah kamu yakin akan menghapus data ini?");
+    const confirmDelete = window.confirm(
+      "Apakah kamu yakin akan menghapus data ini?"
+    );
     if (!confirmDelete) return;
 
     axios
@@ -53,11 +56,11 @@ export default function Bidang() {
     axios
       .post("http://localhost:3000/api/bidang", {
         nama_bidang,
-        daftar_pelatihan,
+        // daftar_pelatihan,
       })
       .then(() => {
         setNama_bidang("");
-        setDaftar_pelatihan("");
+        // setDaftar_pelatihan("");
         fetchData();
       })
       .catch((error) => {
@@ -67,8 +70,16 @@ export default function Bidang() {
         const modalEl = document.getElementById("exampleModal");
         const modalInstance = Modal.getOrCreateInstance(modalEl);
         modalInstance.hide();
-        document.querySelectorAll(".modal-backdrop").forEach((bd) => bd.remove());
+        document
+          .querySelectorAll(".modal-backdrop")
+          .forEach((bd) => bd.remove());
       });
+  };
+
+  const handleDetail = (bidang) => {
+    setSelectedBidang(bidang);
+    const detailModal = new Modal(document.getElementById("detailModal"));
+    detailModal.show();
   };
 
   if (loading) {
@@ -83,7 +94,9 @@ export default function Bidang() {
     <>
       <div className="container mt-4 bidang-container">
         <div className="card">
-          <h1 className="card-header text-white  fw-bold fs-4 bidang-header">Data Bidang</h1>
+          <h1 className="card-header text-white  fw-bold fs-4 bidang-header">
+            Data Bidang
+          </h1>
           <div className="card-body">
             <button
               className="btn btn-primary mb-3"
@@ -98,7 +111,7 @@ export default function Bidang() {
                 <tr>
                   <th>No</th>
                   <th>Nama Bidang</th>
-                  <th>Daftar Pelatihan</th>
+                  
                   {/* <th>Nama Peserta</th> */}
                   <th>Aksi</th>
                 </tr>
@@ -108,9 +121,16 @@ export default function Bidang() {
                   <tr key={bidang.id}>
                     <td>{index + 1}</td>
                     <td>{bidang.nama_bidang}</td>
-                    <td>{bidang.daftar_pelatihan || "-"}</td>
+                    
+
                     {/* <td>{bidang.peserta?.nama_peserta || "-"}</td> */}
                     <td>
+                      <button
+                        className="btn btn-info btn-sm me-2"
+                        onClick={() => handleDetail(bidang)}
+                      >
+                        Detail
+                      </button>
                       <button
                         className="btn btn-warning btn-sm me-2"
                         onClick={() => handleEdit(bidang.id)}
@@ -133,19 +153,28 @@ export default function Bidang() {
       </div>
 
       {/* Modal Tambah Data */}
-      <div className="modal fade" id="exampleModal" tabIndex="-1" aria-hidden="true">
+      <div
+        className="modal fade"
+        id="exampleModal"
+        tabIndex="-1"
+        aria-hidden="true"
+      >
         <div className="modal-dialog">
           <div className="modal-content">
             <form onSubmit={handleSubmit}>
               <div className="modal-header">
                 <h5 className="modal-title">Tambah Data Bidang</h5>
-                <button type="button" className="btn-close" data-bs-dismiss="modal"></button>
+                <button
+                  type="button"
+                  className="btn-close"
+                  data-bs-dismiss="modal"
+                ></button>
               </div>
               <div className="modal-body">
                 <div className="form-floating mb-3">
                   <input
                     type="text"
-                    className="form-control"
+                    className="form-control text-black"
                     id="nama_bidang"
                     placeholder="Nama Bidang"
                     value={nama_bidang}
@@ -154,20 +183,14 @@ export default function Bidang() {
                   />
                   <label htmlFor="nama_bidang">Nama Bidang</label>
                 </div>
-                <div className="form-floating mb-3">
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="daftar_pelatihan"
-                    placeholder="Daftar Pelatihan"
-                    value={daftar_pelatihan}
-                    onChange={(e) => setDaftar_pelatihan(e.target.value)}
-                  />
-                  <label htmlFor="daftar_pelatihan">Daftar Pelatihan</label>
-                </div>
+            
               </div>
               <div className="modal-footer">
-                <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">
+                <button
+                  type="button"
+                  className="btn btn-secondary"
+                  data-bs-dismiss="modal"
+                >
                   Tutup
                 </button>
                 <button type="submit" className="btn btn-primary">
@@ -178,6 +201,63 @@ export default function Bidang() {
           </div>
         </div>
       </div>
+
+{/* Modal Detail */}
+<div className="modal fade" id="detailModal" tabIndex="-1" aria-hidden="true">
+  <div className="modal-dialog modal-lg">
+    <div className="modal-content">
+      {selectedBidang && (
+        <>
+          <div className="modal-header">
+            <h5 className="modal-title">
+              Detail Bidang: {selectedBidang.nama_bidang}
+            </h5>
+            <button type="button" className="btn-close" data-bs-dismiss="modal"></button>
+          </div>
+          <div className="modal-body">
+            <h6 className="fw-bold mb-3">Daftar Pelatihan:</h6>
+            {selectedBidang.pelatihan && selectedBidang.pelatihan.length > 0 ? (
+              <ul className="list-group">
+                {selectedBidang.pelatihan.map((p) => (
+                  <li key={p.id} className="list-group-item">
+                    <strong>{p.nama_pelatihan}</strong>
+                    {p.peserta && p.peserta.length > 0 ? (
+                      <ul className="mt-2">
+                        {p.peserta.map((s) => (
+                          <li key={s.id} className="text-secondary">
+                            {s.nama_peserta}
+                          </li>
+                        ))}
+                      </ul>
+                    ) : (
+                      <p className="text-muted ms-3">Tidak ada peserta.</p>
+                    )}
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p className="text-muted">Tidak ada pelatihan untuk bidang ini.</p>
+            )}
+          </div>
+          <div className="modal-footer">
+            <button
+              type="button"
+              className="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Tutup
+            </button>
+          </div>
+        </>
+      )}
+    </div>
+  </div>
+</div>
+
     </>
   );
 }
+
+
+
+

@@ -1,53 +1,96 @@
-import React from "react";
+import { useState } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const LoginPage = () => {
+  const [email_perusahaan, setEmailPerusahaan] = useState("");
+  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+
+    try {
+      const response = await axios.post("http://localhost:3000/api/user/login", {
+        email_perusahaan,
+        password,
+      });
+
+      const { token, user } = response.data;
+
+      // Simpan token dan posisi ke localStorage
+      localStorage.setItem("token", token);
+      localStorage.setItem("posisi", user.posisi);
+
+      alert("Login berhasil!");
+
+      // Arahkan sesuai posisi user
+      if (user.posisi === "admin") {
+        navigate("/admin");
+      } else {
+        navigate("/");
+      }
+
+    } catch (error) {
+      console.error("Gagal login:", error);
+      alert(error.response?.data?.message || "Email atau password salah");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="flex w-[900px] h-[500px] bg-white shadow-2xl rounded-2xl overflow-hidden">
-        {/* Bagian kiri - Welcome */}
-        <div className="w-1/2 flex flex-col justify-center px-10 text-white bg-gradient-to-br from-gray-400 to-gray-500">
-          <h1 className="text-3xl font-bold mb-4">Welcome to website</h1>
-          <p className="text-sm leading-relaxed">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-            eiusmod tempor incididunt ut labore et dolore magna aliqua.
+    <div className="d-flex align-items-center justify-content-center vh-100 bg-light">
+      
+      <div
+        className="d-flex shadow-lg rounded-4 overflow-hidden bg-white"
+        style={{ width: "900px", height: "500px" }}
+      >
+        {/* Kiri */}
+        <div
+          className="w-50 d-flex flex-column justify-content-center px-5 text-white"
+          style={{ background: "linear-gradient(135deg, #1B3C53, #6b7280)" }}
+        >
+          <h1 className="fw-bold mb-3">Welcome to Website</h1>
+          <p className="small">
+            Masuk untuk melanjutkan aktivitas Anda dalam sistem pelaporan ini.
           </p>
         </div>
 
-        {/* Bagian kanan - Form Login */}
-        <div className="w-1/2 flex flex-col justify-center items-center bg-white">
-          <h2 className="text-lg font-semibold mb-6 text-gray-700">
-            USER LOGIN
-          </h2>
-          <form className="w-3/4">
-            <div className="mb-4">
+        {/* Kanan */}
+        <div className="w-50 d-flex flex-column justify-content-center align-items-center bg-white p-4">
+          <h2 className="fw-semibold mb-4 text-secondary">LOGIN</h2>
+          <form className="w-75" onSubmit={handleSubmit}>
+            <div className="mb-3">
               <input
-                type="text"
-                placeholder="Username"
-                className="w-full px-4 py-2 border rounded-full focus:outline-none focus:ring-2 focus:ring-gray-400"
+                type="email"
+                placeholder="Email Perusahaan"
+                className="form-control rounded-pill text-black"
+                value={email_perusahaan}
+                onChange={(e) => setEmailPerusahaan(e.target.value)}
+                required
               />
             </div>
-            <div className="mb-4">
+            <div className="mb-3">
               <input
                 type="password"
                 placeholder="Password"
-                className="w-full px-4 py-2 border rounded-full focus:outline-none focus:ring-2 focus:ring-gray-400"
+                className="form-control rounded-pill text-black"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
               />
-            </div>
-
-            <div className="flex items-center justify-between text-sm mb-6">
-              <label className="flex items-center">
-                <input type="checkbox" className="mr-2" /> Remember me
-              </label>
-              <a href="#" className="text-gray-500 hover:underline">
-                Forgot password?
-              </a>
             </div>
 
             <button
               type="submit"
-              className="w-full py-2 rounded-full bg-gray-400 hover:bg-gray-500 text-white font-semibold transition duration-200"
+              className="btn w-100 rounded-pill text-white fw-semibold "
+              style={{ backgroundColor: "#D2C1B6" }}
+              disabled={loading}
             >
-              LOGIN
+              {loading ? "Memproses..." : "LOGIN"}
             </button>
           </form>
         </div>

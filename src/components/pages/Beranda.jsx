@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import "../cssnya/Beranda.css"; 
 import axios from "axios";
+import { jwtDecode } from "jwt-decode";
+
 
 export default function Beranda() {
 
@@ -10,6 +12,7 @@ export default function Beranda() {
   const [pelatihanCount, setPelatihanCount] = useState(0);
   const [sertifikatCount, setSertifikatCount] = useState(0);
   const [pesertaSertifCount, setPesertaSertifCount] = useState(0);
+  const [nama, setNama] = useState("");
 
  
   const fetchDataUser = () => {
@@ -62,11 +65,23 @@ export default function Beranda() {
     fetchDataPelatihan();
     fetchDataSertifikasi();
     fetchDataPesertaSertif();
+
+    // ambil token dan decode nama_institusi
+    const token = localStorage.getItem("token");
+    if (token) {
+      try {
+        const decoded = jwtDecode(token);
+        // pastikan backend mengirimkan nama_institusi dalam payload token
+        setNama(decoded.nama_institusi || "Admin");
+      } catch (error) {
+        console.error("Gagal decode token:", error);
+      }
+    }
   }, []);
 
   return (
     <div className="container mt-4">
-      <h1 className="mb-4 fw-bold text-center">Welcome Admin (nama admin)</h1>
+      <h1 className="mb-4 fw-bold text-center"> Welcome Admin {nama && `(${nama})`}</h1>
 
       <div className="row g-4">
         {/* Card User */}
@@ -123,7 +138,7 @@ export default function Beranda() {
         <div className="col-md-4 col-sm-6">
           <div className="card text-white shadow card-2">
             <div className="card-body text-center">
-              <h2 className="card-title fw-bold">{pesertaCount}</h2>
+              <h2 className="card-title fw-bold">{pesertaSertifCount}</h2>
               <p className="card-text">
                 Peserta yang sudah mempunyai sertifikat
               </p>

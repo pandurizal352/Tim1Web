@@ -1,0 +1,681 @@
+/* SistemManajemenK3.css - Full Screen Layout */
+
+/* Color Variables */
+:root {
+  --primary-navy: #1B3C53;
+  --secondary-blue: #456882;
+  --tertiary-taupe: #D2C1B6;
+  --light-cream: #F9F3EF;
+  --text-dark: #2c3e50;
+  --text-light: #6c757d;
+}
+
+/* Full Screen Wrapper */
+.smk3-page {
+  width: 100vw;
+  min-height: 100vh;
+  padding: 0;
+  margin: 0;
+  background: var(--light-cream);
+  display: flex;
+  flex-direction: column;
+}
+
+/* Hero Section - Full Width */
+.hero-section {
+  position: relative;
+  width: 100%;
+  background: linear-gradient(135deg, var(--primary-navy) 0%, var(--secondary-blue) 100%);
+  color: white;
+  padding: 80px 0 40px;
+  text-align: center;
+  overflow: hidden;
+}
+
+.hero-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(27, 60, 83, 0.9) 0%, rgba(69, 104, 130, 0.8) 100%);
+  z-index: 1;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  max-width: 100%;
+  padding: 0 2rem;
+  margin: 0 auto 40px;
+}
+
+.hero-title {
+  font-size: 3rem;
+  font-weight: 700;
+  margin-bottom: 20px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  line-height: 1.2;
+}
+
+.hero-subtitle {
+  font-size: 1.3rem;
+  font-weight: 300;
+  opacity: 0.95;
+  margin-bottom: 0;
+}
+
+.header-image-upload {
+  position: relative;
+  z-index: 2;
+  max-width: 90%;
+  height: 450px;
+  margin: 0 auto;
+  background: rgba(255, 255, 255, 0.1);
+  border: 3px dashed rgba(255, 255, 255, 0.3);
+  border-radius: 20px;
+  cursor: pointer;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.header-image-upload:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.5);
+  transform: translateY(-2px);
+}
+
+.header-upload-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 18px;
+}
+
+.upload-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.upload-icon {
+  font-size: 4rem;
+  margin-bottom: 15px;
+}
+
+.upload-text {
+  font-size: 1.2rem;
+  margin: 0;
+}
+
+.hero-fade {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 100px;
+  background: linear-gradient(to bottom, transparent, var(--light-cream));
+  z-index: 2;
+}
+
+/* Introduction Section - Full Width */
+.section-intro {
+  width: 100%;
+  padding: 60px 2rem;
+  background: var(--tertiary-taupe);
+}
+
+.container {
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+.text-paragraph {
+  font-size: 1.15rem;
+  line-height: 1.8;
+  color: var(--text-dark);
+  text-align: justify;
+  margin: 0;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+/* Training Detail Section - Full Width */
+.section-training-detail {
+  width: 100%;
+  padding: 60px 2rem;
+  background: var(--light-cream);
+}
+
+.training-card-wrapper {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(27, 60, 83, 0.1);
+  overflow: hidden;
+  width: 100%;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.training-card-wrapper:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 4px 16px rgba(27, 60, 83, 0.15);
+}
+
+/* Training Header */
+.training-card-header {
+  background: linear-gradient(135deg, var(--primary-navy) 0%, var(--secondary-blue) 100%);
+  color: white;
+  padding: 1.5rem;
+  border: none;
+}
+
+.training-card-title {
+  font-size: 2rem;
+  font-weight: 600;
+  margin-bottom: 15px;
+  color: white;
+}
+
+.training-badge-group {
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+.training-badge {
+  background: rgba(255, 255, 255, 0.2);
+  padding: 10px 20px;
+  border-radius: 25px;
+  font-size: 1rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Carousel - Full Width */
+.training-carousel {
+  position: relative;
+  width: 100%;
+  height: 450px;
+  background: #f5f5f5;
+  overflow: hidden;
+}
+
+.carousel-track {
+  display: flex;
+  height: 100%;
+  transition: transform 0.5s ease;
+}
+
+.carousel-slide {
+  flex-shrink: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #e9ecef;
+  border: 3px dashed #ccc;
+  cursor: pointer;
+  position: relative;
+}
+
+.carousel-slide.has-image {
+  border: none;
+  background: white;
+}
+
+.carousel-slide-image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.carousel-slide-placeholder {
+  text-align: center;
+  color: #999;
+}
+
+.carousel-placeholder-icon {
+  font-size: 3rem;
+  margin-bottom: 10px;
+  display: block;
+}
+
+.carousel-control {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0, 0, 0, 0.5);
+  color: white;
+  border: none;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  font-size: 1.5rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  transition: all 0.3s ease;
+}
+
+.carousel-control:hover {
+  background: rgba(0, 0, 0, 0.8);
+  transform: translateY(-50%) scale(1.1);
+}
+
+.carousel-control-prev {
+  left: 15px;
+}
+
+.carousel-control-next {
+  right: 15px;
+}
+
+.carousel-indicators {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 10px;
+  z-index: 10;
+}
+
+.carousel-indicator {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.5);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: none;
+}
+
+.carousel-indicator.active {
+  background: white;
+  width: 30px;
+  border-radius: 6px;
+}
+
+.carousel-indicator:hover {
+  background: rgba(255, 255, 255, 0.8);
+}
+
+/* Training Body */
+.training-card-body {
+  padding: 2rem;
+  background-color: white;
+}
+
+.training-description {
+  font-size: 1.1rem;
+  line-height: 1.7;
+  color: var(--text-dark);
+  margin-bottom: 30px;
+  text-align: justify;
+}
+
+/* Info Box */
+.info-box {
+  background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+  border-left: 4px solid var(--secondary-blue);
+  border-radius: 8px;
+  padding: 25px;
+  margin-bottom: 35px;
+  transition: all 0.3s ease;
+}
+
+.info-box:hover {
+  box-shadow: 0 4px 12px rgba(69, 104, 130, 0.2);
+  transform: translateX(5px);
+}
+
+.info-box-title {
+  color: var(--primary-navy);
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.info-box-text {
+  color: var(--text-dark);
+  line-height: 1.7;
+  margin: 0;
+  text-align: justify;
+}
+
+.training-section {
+  margin-bottom: 35px;
+}
+
+.training-section-title {
+  color: var(--primary-navy);
+  font-size: 1.4rem;
+  font-weight: 600;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.training-section-title i {
+  color: var(--secondary-blue);
+}
+
+/* Schedule Table */
+.schedule-table-wrapper {
+  overflow-x: auto;
+  border-radius: 8px;
+  border: 2px solid var(--tertiary-taupe);
+}
+
+.schedule-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+}
+
+.schedule-table thead {
+  background: var(--secondary-blue);
+  color: white;
+}
+
+.schedule-table th,
+.schedule-table td {
+  padding: 12px;
+  text-align: center;
+  border: 1px solid #dee2e6;
+}
+
+.schedule-table tbody tr {
+  transition: background 0.2s ease;
+}
+
+.schedule-table tbody tr:hover {
+  background: var(--light-cream);
+}
+
+/* Training List */
+.training-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.training-list-item {
+  padding: 12px 0;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  border-bottom: 1px solid #f0f0f0;
+  transition: all 0.2s ease;
+}
+
+.training-list-item:last-child {
+  border-bottom: none;
+}
+
+.training-list-item:hover {
+  padding-left: 8px;
+  background-color: var(--light-cream);
+}
+
+.list-icon {
+  color: var(--secondary-blue);
+  font-size: 1.2rem;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.training-list-item span {
+  flex: 1;
+  line-height: 1.6;
+  color: var(--text-dark);
+}
+
+/* Certification Box */
+.certification-box {
+  background: var(--light-cream);
+  border: 2px solid var(--secondary-blue);
+  border-radius: 12px;
+  padding: 25px;
+  margin-bottom: 35px;
+  transition: all 0.3s ease;
+}
+
+.certification-box:hover {
+  box-shadow: 0 4px 12px rgba(27, 60, 83, 0.1);
+  border-color: var(--primary-navy);
+}
+
+.certification-title {
+  color: var(--primary-navy);
+  font-weight: 600;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.certification-text {
+  margin: 0;
+  line-height: 1.6;
+  color: var(--text-dark);
+}
+
+/* Contact Section - Full Width */
+.section-contact {
+  width: 100%;
+  background: linear-gradient(135deg, var(--primary-navy) 0%, var(--secondary-blue) 100%);
+  padding: 80px 2rem;
+  color: white;
+}
+
+.section-header-white {
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+.section-title-white {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 15px;
+}
+
+.section-subtitle-white {
+  font-size: 1.2rem;
+  opacity: 0.9;
+}
+
+.contact-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 30px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.contact-card {
+  background: rgba(255, 255, 255, 0.1);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  border-radius: 12px;
+  padding: 40px;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.contact-card:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.4);
+  transform: translateY(-5px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+}
+
+.contact-icon {
+  font-size: 3rem;
+  margin-bottom: 20px;
+  opacity: 0.9;
+}
+
+.contact-name {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 15px;
+}
+
+.contact-detail {
+  font-size: 1.1rem;
+  margin: 8px 0;
+  opacity: 0.95;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+/* Footer - Full Width */
+.footer {
+  width: 100%;
+  background: var(--primary-navy);
+  color: white;
+  padding: 25px 2rem;
+  text-align: center;
+}
+
+.footer-text {
+  margin: 0;
+  opacity: 0.9;
+  font-size: 0.95rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .hero-content,
+  .section-intro,
+  .section-training-detail,
+  .section-contact {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  .hero-title {
+    font-size: 2rem;
+  }
+
+  .hero-subtitle {
+    font-size: 1rem;
+  }
+
+  .header-image-upload {
+    height: 300px;
+    max-width: 95%;
+  }
+
+  .upload-icon {
+    font-size: 2.5rem;
+  }
+
+  .upload-text {
+    font-size: 1rem;
+  }
+
+  .training-carousel {
+    height: 300px;
+  }
+
+  .training-card-title {
+    font-size: 1.5rem;
+  }
+
+  .training-badge-group {
+    flex-direction: column;
+  }
+
+  .training-card-header {
+    padding: 1rem;
+  }
+
+  .training-card-body {
+    padding: 1.5rem;
+  }
+
+  .section-title-white {
+    font-size: 2rem;
+  }
+
+  .contact-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .schedule-table-wrapper {
+    overflow-x: scroll;
+  }
+
+  .schedule-table {
+    font-size: 0.85rem;
+  }
+
+  .schedule-table th,
+  .schedule-table td {
+    padding: 8px;
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .hero-section {
+    padding: 60px 0.5rem 30px;
+  }
+
+  .hero-title {
+    font-size: 1.5rem;
+  }
+
+  .hero-content,
+  .section-intro,
+  .section-training-detail,
+  .section-contact {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+  }
+
+  .training-card-header {
+    padding: 1rem;
+  }
+
+  .training-card-body {
+    padding: 1rem;
+  }
+
+  .carousel-control {
+    width: 40px;
+    height: 40px;
+    font-size: 1.2rem;
+  }
+
+  .footer {
+    padding: 20px 0.5rem;
+  }
+
+  .info-box {
+    padding: 20px;
+  }
+
+  .training-section-title {
+    font-size: 1.2rem;
+  }
+
+  .info-box-title {
+    font-size: 1.1rem;
+  }
+}

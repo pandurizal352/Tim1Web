@@ -1,5 +1,6 @@
 import React from "react";
 import "../components/cssnya/footer.css";
+import LogoGroup from "../images/LogoGroup.png";
 
 const Footer = () => {
   return (
@@ -16,12 +17,12 @@ const Footer = () => {
             </p>
             <div className="d-flex align-items-center gap-3 mt-3">
               <img
-                src="https://upload.wikimedia.org/wikipedia/commons/8/8a/G20_Indonesia_2022_logo.svg"
+                src= {LogoGroup}
                 alt="G20"
                 className="footer-logo"
               />
               <img
-                src="https://upload.wikimedia.org/wikipedia/commons/4/4a/Logo_K3.svg"
+                src={LogoGroup}
                 alt="K3"
                 className="footer-logo"
               />
@@ -33,10 +34,10 @@ const Footer = () => {
             <h2 className="fw-bold mb-3 border-bottom border-light pb-2">Sosial Media</h2>
             <ul className="list-unstyled small">
               <li className="mb-2">
-                📸 <a href="#" className="link-light text-decoration-underline"> @geomandirigroup</a>
+                📸 <a href="https://www.instagram.com/geomandirigroupcreative1?igsh=MWY5cGkzNGNmZnV5" className="link-light text-decoration-underline"> @geomandirigroup</a>
               </li>
               <li>
-                🎵 <a href="#" className="link-light text-decoration-underline"> @geogroupcreative</a>
+                🎵 <a href="https://www.tiktok.com/@geomandirigroupcreative1?_r=1&_t=ZS-91204Swi80q" className="link-light text-decoration-underline"> @geogroupcreative</a>
               </li>
             </ul>
           </div>
@@ -50,7 +51,7 @@ const Footer = () => {
             </p>
             <p className="small mb-1">📞 (021) 8661-8812</p>
             <p className="small mb-3">
-              ✉️ <a href="mailto:geomandirigroup@gmail.com" className="link-light text-decoration-underline">geomandirigroup@gmail.com</a>
+              ✉️ <a href="mailto:geomandiriteam1@gmail.com" className="link-light text-decoration-underline">geomandiriteam1@gmail.com</a>
             </p>
             <div className="ratio ratio-16x9 rounded overflow-hidden shadow border border-light">
               <iframe
@@ -65,7 +66,7 @@ const Footer = () => {
 
         <hr className="border-light my-4" />
         <p className="text-center small text-light mb-0">
-          © 2025 Geo Mandiri Group — Created with 💙 by Team 1
+          © 2025 Geo Mandiri Group — Created with 💙 by Boost Performance
         </p>
       </div>
     </footer>
