@@ -45,6 +45,33 @@ const getPesertaById = async (req, res) => {
     }
 }
 
+const getPesertaByQ = async (req, res) => {
+  try {
+    const { q } = req.query;
+    const keyword = q?.toLowerCase() || "";
+
+    const semuaPeserta = await prisma.peserta.findMany({
+      include: {
+        pelatihan: true,
+        user: true,
+        pesertaSertifikat: true
+      },
+    });
+
+    const peserta = semuaPeserta.filter(p =>
+      (p.nama_peserta.toLowerCase().includes(keyword))
+      );
+
+    res.json({ data: peserta });
+  } catch (error) {
+    console.error("❌ ERROR FETCHING PESERTA:", error);
+    res.status(500).json({
+      message: "Gagal mengambil data peserta",
+      error: error.message,
+    });
+  }
+};
+
 // CREATE
 const createPeserta = async (req, res) => {
     try {
@@ -253,6 +280,7 @@ const tambahPeserta = async (req, res) => {
 module.exports = {
     getAllPeserta,
     getPesertaById,
+    getPesertaByQ,
     createPeserta,
     updatePeserta,
     deletePeserta,

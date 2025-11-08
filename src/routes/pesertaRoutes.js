@@ -4,6 +4,7 @@ const router = express.Router();
 const pesertaController = require('../controllers/pesertaController');
 const { validationBodyPeserta,uploadBukti } = require('../middleware/validation');
 
+router.get('/search', pesertaController.getPesertaByQ);
 router.get('/', pesertaController.getAllPeserta);
 router.get('/:id', pesertaController.getPesertaById);
 router.post('/', validationBodyPeserta, pesertaController.createPeserta);
