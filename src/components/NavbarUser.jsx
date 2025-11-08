@@ -28,7 +28,7 @@ export default function NavbarUser() {
   return (
     <nav className="navbar navbar-expand-lg d-grid gap-0 row-gap-3">
       <div className="container-fluid">
-        <a className="navbar-brand" href="#">
+        <a className="navbar-brand" href="/">
           <img src={geomandiri} alt="Bootstrap" width="200" height="50" />
         </a>
         <button
@@ -52,9 +52,12 @@ export default function NavbarUser() {
             >
               Beranda
             </Link>
+
             {/* <Link className="nav-link navText ps-5 pe-3" to="/bidang">
               Bidang
             </Link> */}
+            
+            {isLoggedIn && (
             <Link
               className={`nav-link navText ps-5 pe-3 ${
                 location.pathname === "/pesertaUser" ? "text-light fw-bold" : ""
@@ -63,6 +66,8 @@ export default function NavbarUser() {
             >
               Peserta
             </Link>
+            )}
+
             <Link
               className={`nav-link navText ps-5 pe-3 ${
                 location.pathname === "/tentang-kami"

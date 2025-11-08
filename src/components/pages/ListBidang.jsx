@@ -86,11 +86,11 @@ export default function ListBidang() {
 
   return (
     <>
-      <h1 className="display-6 pt-4 pb-3 titleColorOne fw-bold text-center">
+      <h1 data-aos="fade-up" className="display-6 pt-4 pb-3 titleColorOne fw-bold text-center">
         BIDANG PELATIHAN
       </h1>
 
-      <div className="position-relative mt-3 px-5">
+      <div data-aos="fade-up" className="position-relative mt-3 px-5">
         {/* Tombol kiri */}
         <button
           onClick={() => scroll("left")}
@@ -109,6 +109,7 @@ export default function ListBidang() {
           {bidang.map((daftar, index) => (
             <div
               key={index}
+              data-aos="fade-up"
               className="card text-bg-light border-info mb-3 text-center long"
             >
               <div className="card-body d-flex flex-column justify-content-between bgCard">
@@ -126,6 +127,7 @@ export default function ListBidang() {
         {/* Tombol kanan */}
         <button
           onClick={() => scroll("right")}
+          data-aos="fade-up"
           className="btn btn-light position-absolute top-50 end-0 translate-middle-y shadow"
         >
           <FaArrowAltCircleRight />

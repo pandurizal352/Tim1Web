@@ -1,5 +1,5 @@
 nav {
-  background-color: rgb(27, 60, 83);
+  background: linear-gradient(rgb(10, 78, 9), #1B3C53 100%);
 }
 
 .navText {
@@ -11,24 +11,29 @@ thead {
 }
 
 .heightCar {
-  height: 500px;
+  height: 90vh;
   object-fit: cover;
 }
 
 .bgFirst {
-  background-color: white;
-  min-height: 450px;
+  background: linear-gradient(rgb(27, 60, 83) 90%, white);
+  min-height: 750px;
 }
 
 .bgSecond {
-  background-color: rgb(27, 60, 83);
-  min-height: 450px;
+  background: linear-gradient(rgb(27, 60, 83) 90%, white);
+  min-height: 500px;
 }
-/* 
+
 .bgThird {
-  background-color: rgb(249, 243, 239);
-  min-height: 450px;
-} */
+  background-color: white;
+  min-height: 500px;
+}
+
+.bgFourth {
+  background: linear-gradient(white 90%, rgb(27, 60, 83));
+  min-height: 800px;
+}
 
 .long {
   height: 100%;

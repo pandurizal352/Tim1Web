@@ -38,12 +38,12 @@ export default function AlurDaftar() {
 
   return (
     <>
-      <h1 className="display-6 pt-4 pb-3 titleColorOne fw-bold text-center">
+      <h1 data-aos="fade-up" className="display-6 pt-4 pb-3 titleColorOne fw-bold text-center">
         ALUR PENDAFTARAN
       </h1>
 
       {/* Baris 1 */}
-      <div className="d-flex align-items-center justify-content-center gap-3 mb-3 mt-3">
+      <div data-aos="fade-up" className="d-flex align-items-center justify-content-center gap-3 mb-3 mt-3">
         {alur.slice(0, 3).map((alur, index) => (
           <div key={index} className="d-flex align-items-center">
             <div
@@ -65,13 +65,14 @@ export default function AlurDaftar() {
 
       {/* Panah turun */}
       <div
+        data-aos="fade-up"
         className="d-flex justify-content-end mb-3 mt-3 arrowRight"
       >
         <FaArrowDown className="arrow" />
       </div>
 
       {/* Baris 2 */}
-      <div className="d-flex align-items-center justify-content-center gap-3 flex-row-reverse">
+      <div data-aos="fade-up" className="d-flex align-items-center justify-content-center gap-3 flex-row-reverse">
         {alur.slice(3, 6).map((alur, index) => (
           <div
             key={index + 4}
@@ -96,13 +97,14 @@ export default function AlurDaftar() {
 
       {/* Panah turun */}
       <div
+        data-aos="fade-up"
         className="d-flex justify-content-start mb-3 mt-3 arrowLeft"
       >
         <FaArrowDown className="arrow" />
       </div>
 
       {/* Baris 3 */}
-      <div className="d-flex align-items-center justify-content-start gap-3 mb-3 pb-5 pad">
+      <div data-aos="fade-up" className="d-flex align-items-center justify-content-start gap-3 mb-3 pb-5 pad">
         {alur.slice(6, 8).map((alur, index) => (
           <div key={index} className="d-flex align-items-center">
             <div

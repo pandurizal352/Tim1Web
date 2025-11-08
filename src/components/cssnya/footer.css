@@ -1,5 +1,5 @@
 .footer {
-  background: #1b3c53;
+  background: linear-gradient(#1B3C53 40%, rgb(10, 78, 9), rgb(17, 78, 9));
   color: white;
   overflow: hidden;
   position: relative;

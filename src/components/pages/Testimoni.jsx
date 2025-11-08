@@ -5,7 +5,7 @@ export default function Testimoni() {
         TESTIMONI
       </h1>
 
-      <figure className="d-flex align-items-center gap-3 ms-4 p-3 rounded shadow-sm pb-3 quote">
+      <figure className="d-flex align-items-center gap-3 ms-5 p-3 rounded shadow-sm pb-3 quote">
         <img
           src="https://www.geomandiri.co.id/uploads/testimoni/6.jpg"
           alt="Testi 1"
@@ -22,8 +22,9 @@ export default function Testimoni() {
           </figcaption>
         </blockquote>
       </figure>
+      <br />
 
-      <figure className="text-end d-flex flex-row-reverse align-items-center gap-3 ms-auto me-4 p-3 rounded shadow-sm quote">
+      <figure className="text-end d-flex flex-row-reverse align-items-center gap-3 ms-auto me-5 p-3 rounded shadow-sm quote">
         <img
           src="https://www.geomandiri.co.id/uploads/testimoni/3.jpg"
           alt="Testi 1"
@@ -41,8 +42,9 @@ export default function Testimoni() {
           </figcaption>
         </blockquote>
       </figure>
+      <br />
 
-      <figure className="d-flex align-items-center gap-3 ms-4 p-3 rounded shadow-sm quote">
+      <figure className="d-flex align-items-center gap-3 ms-5 p-3 rounded shadow-sm quote">
         <img
           src="https://www.geomandiri.co.id/uploads/testimoni/5.jpg"
           alt="Testi 2"

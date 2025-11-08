@@ -7,7 +7,7 @@ export default function Carousel() {
     <>
       <div
         id="carouselExampleInterval"
-        className="carousel slide mb-2"
+        className="carousel slide"
         data-bs-ride="carousel"
       >
         <div className="carousel-inner">
@@ -63,3 +63,36 @@ export default function Carousel() {
     </>
   );
 }
+
+// import { Parallax } from 'react-parallax'
+// import ilustrasiPekerja from '../../images/ilustrasiPekerja.png'
+// import kelas from '../../images/kelas.png'
+// import proyek from '../../images/proyek.png'
+// import './Carousel.css'
+
+// export default function ParallaxSection() {
+//   return (
+//     <>
+//       <Parallax bgImage={ilustrasiPekerja} strength={400}>
+//         <div className="parallax-content">
+//           <h2>PT. Geo Mandiri Kreasi</h2>
+//           <p>We Serve You Better In Safety</p>
+//         </div>
+//       </Parallax>
+
+//       <Parallax bgImage={kelas} strength={300}>
+//         <div className="parallax-content">
+//           <h2>Pelatihan Profesional</h2>
+//           <p>Tingkatkan Keahlian Anda Bersama Kami</p>
+//         </div>
+//       </Parallax>
+
+//       <Parallax bgImage={proyek} strength={200}>
+//         <div className="parallax-content">
+//           <h2>Proyek dan Implementasi</h2>
+//           <p>Pengalaman Nyata di Lapangan</p>
+//         </div>
+//       </Parallax>
+//     </>
+//   )
+// }
