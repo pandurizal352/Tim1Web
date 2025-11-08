@@ -1,5 +1,6 @@
 const express = require('express'); //import express
 const Cors = require('cors'); // import  CORS package
+const path = require('path');
 
 const app = express();
 
@@ -10,6 +11,8 @@ app.use(Cors()); // enable  CORS untuk semua origin
 // app.use(cors());  aktifkan cors (default: suemua origin di perbolehkan), 
 // berguna saat frontend di origin berbeda
 app.use(express.json()); //parse JSON body
+
+app.use('/uploads', express.static(path.join(process.cwd(), 'uploads')));
 
 // routes
 const bidangRoutes = require('./routes/bidangRoutes');

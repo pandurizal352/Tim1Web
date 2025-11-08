@@ -39,20 +39,56 @@ const getAllUserById = async (req, res) => {
 };
 
 
-const deleteuser = async (req, res) => {
-    try {
-        const id = parseInt(req.params.id);
+// const deleteuser = async (req, res) => {
+//     try {
+//         const id = parseInt(req.params.id);
 
-        await prisma.user.delete({ where : { id } });
-        return res.json({ message : 'User deleted' });
-    } catch (error) {
-        console.error(error);
-        if (error.code === 'P2025') {
-            return res.status(404).json ({ message : 'User not found'});
-        }
-        return res.status(500).json ({ message : 'Internal Server Error' });
+//         await prisma.user.delete({ where : { id } });
+//         return res.json({ message : 'User deleted' });
+//     } catch (error) {
+//         console.error(error);
+//         if (error.code === 'P2025') {
+//             return res.status(404).json ({ message : 'User not found'});
+//         }
+//         return res.status(500).json ({ message : 'Internal Server Error' });
+//     }
+// }
+
+
+const deleteuser = async (req, res) => {
+  try {
+    const id = parseInt(req.params.id);
+
+  
+    const user = await prisma.user.findUnique({ where: { id } });
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
     }
-}
+
+
+    if (user.bukti_pembayaran) {
+      const filePath = path.join(__dirname, "../../uploads/bukti_pembayaran", user.bukti_pembayaran);
+
+      // Cek apakah file benar-benar ada
+      if (fs.existsSync(filePath)) {
+        fs.unlinkSync(filePath); // hapus file
+        console.log("🗑️ File bukti pembayaran dihapus:", user.bukti_pembayaran);
+      }
+    }
+
+   
+    await prisma.user.delete({ where: { id } });
+
+    return res.json({ message: "User dan bukti pembayaran berhasil dihapus" });
+  } catch (error) {
+    console.error(error);
+    if (error.code === "P2025") {
+      return res.status(404).json({ message: "User not found" });
+    }
+    return res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+
 
 const updateUser = async (req, res) => {
   try {
@@ -91,9 +127,7 @@ const updateUser = async (req, res) => {
       data: {
         nama_institusi: nama_institusi ?? existing.nama_institusi,
         email_perusahaan: email_perusahaan ?? existing.email_perusahaan,
-        telpn_perusahaan: telpn_perusahaan
-          ? parseInt(telpn_perusahaan)
-          : existing.telpn_perusahaan,
+        telpn_perusahaan: telpn_perusahaan ??  existing.telpn_perusahaan,
         alamat: alamat ?? existing.alamat,
         password: hashedPassword,
         status_pembayaran: status_pembayaran ?? existing.status_pembayaran,
@@ -213,52 +247,111 @@ const updateUser = async (req, res) => {
 
 
     // POST /api/institute/register
-   const register = async (req, res, next) => {
-        try {
-            const { email_perusahaan, password, nama_institusi, telpn_perusahaan, alamat, posisi } = req.body;
+const register = async (req, res, next) => {
+  try {
+    const { email_perusahaan, password, nama_institusi, telpn_perusahaan, alamat, posisi, status_pembayaran } = req.body;
 
-            // Validasi sederhana
-            if (!email_perusahaan || !password || !nama_institusi || !posisi) {
-                return res.status(400).json({ message: 'Email, password, dan nama institusi wajib diisi' });
-            }
-            if (password.length < 6) {
-                return res.status(400).json({ message: 'Password minimal 6 karakter' });
-            }
-
-            // Cek apakah institusi sudah ada
-            const existing = await prisma.user.findUnique({
-                where: { email_perusahaan }
-            });
-
-            if (existing) {
-                return res.status(409).json({ message: 'Email institusi sudah terdaftar' });
-            }
-
-            // Hash password
-            const hashed = await bcrypt.hash(password, SALT_ROUNDS);
-
-            // Insert user institute
-            const newInstitute = await prisma.user.create({
-                data: {
-                    email_perusahaan,
-                    password: hashed,
-                    nama_institusi,
-                    telpn_perusahaan: telpn_perusahaan ? parseInt(telpn_perusahaan) : 0,
-                    // telpn_perusahaan: telpn_perusahaan || '',
-                    alamat: alamat || null,
-                    posisi
-                }
-            });
-
-            return res.status(201).json({
-                id_user: newInstitute.id_user,
-                email_perusahaan: newInstitute.email_perusahaan,
-                nama_institusi: newInstitute.nama_institusi
-            });
-        } catch (err) {
-            next(err);
-        }
+    // Validasi sederhana
+    if (!email_perusahaan || !password || !nama_institusi || !posisi) {
+      return res.status(400).json({ message: 'Email, password, dan nama institusi wajib diisi' });
     }
+    if (password.length < 6) {
+      return res.status(400).json({ message: 'Password minimal 6 karakter' });
+    }
+
+    // Cek apakah institusi sudah ada
+    const existing = await prisma.user.findUnique({
+      where: { email_perusahaan },
+    });
+
+    if (existing) {
+      return res.status(409).json({ message: 'Email institusi sudah terdaftar' });
+    }
+
+    // Hash password
+    const hashed = await bcrypt.hash(password, SALT_ROUNDS);
+
+    // Ambil nama file jika ada
+    const bukti_pembayaran = req.file ? req.file.filename : null;
+
+    // Insert user institute
+    const newInstitute = await prisma.user.create({
+      data: {
+        email_perusahaan,
+        password: hashed,
+        nama_institusi,
+        telpn_perusahaan: telpn_perusahaan || '',
+        alamat: alamat || null,
+        posisi,
+        status_pembayaran: status_pembayaran || 'belum_dibayar',
+        bukti_pembayaran,
+      },
+    });
+
+    return res.status(201).json({
+      message: 'User berhasil didaftarkan',
+      user: {
+        id_user: newInstitute.id_user,
+        email_perusahaan: newInstitute.email_perusahaan,
+        nama_institusi: newInstitute.nama_institusi,
+        status_pembayaran: newInstitute.status_pembayaran,
+        bukti_pembayaran: newInstitute.bukti_pembayaran,
+      },
+    });
+  } catch (err) {
+    console.error(err);
+    next(err);
+  }
+};
+
+
+
+  //  const register = async (req, res, next) => {
+  //       try {
+  //           const { email_perusahaan, password, nama_institusi, telpn_perusahaan, alamat, posisi } = req.body;
+
+  //           // Validasi sederhana
+  //           if (!email_perusahaan || !password || !nama_institusi || !posisi) {
+  //               return res.status(400).json({ message: 'Email, password, dan nama institusi wajib diisi' });
+  //           }
+  //           if (password.length < 6) {
+  //               return res.status(400).json({ message: 'Password minimal 6 karakter' });
+  //           }
+
+  //           // Cek apakah institusi sudah ada
+  //           const existing = await prisma.user.findUnique({
+  //               where: { email_perusahaan }
+  //           });
+
+  //           if (existing) {
+  //               return res.status(409).json({ message: 'Email institusi sudah terdaftar' });
+  //           }
+
+  //           // Hash password
+  //           const hashed = await bcrypt.hash(password, SALT_ROUNDS);
+
+  //           // Insert user institute
+  //           const newInstitute = await prisma.user.create({
+  //               data: {
+  //                   email_perusahaan,
+  //                   password: hashed,
+  //                   nama_institusi,
+  //                   // telpn_perusahaan: telpn_perusahaan ? parseInt(telpn_perusahaan) : 0, //di ganti ama aqil
+  //                   telpn_perusahaan: telpn_perusahaan || '',
+  //                   alamat: alamat || null,
+  //                   posisi
+  //               }
+  //           });
+
+  //           return res.status(201).json({
+  //               id_user: newInstitute.id_user,
+  //               email_perusahaan: newInstitute.email_perusahaan,
+  //               nama_institusi: newInstitute.nama_institusi
+  //           });
+  //       } catch (err) {
+  //           next(err);
+  //       }
+  //   }
 
     // POST /api/institute/login
 const login = async (req, res, next) => {
@@ -286,12 +379,13 @@ const login = async (req, res, next) => {
     // Buat payload token
     const payload = {
       id: user.id,
+      nama_institusi: user.nama_institusi,
       email_perusahaan: user.email_perusahaan,
       posisi: user.posisi,
     };
 
     // Buat JWT
-    const token = jwt.sign(payload, jwtSecret, { expiresIn: '24h' });
+    const token = jwt.sign(payload, jwtSecret, { expiresIn: '1h' });
 
     // Kirim response
     return res.json({

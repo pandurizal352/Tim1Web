@@ -5,7 +5,7 @@ const { uploadBukti } = require('../middleware/validation');
 
 router.get('/', authUserController.getAllUser);
 router.get('/:id', authUserController.getAllUserById);
-router.post('/register', authUserController.register);
+router.post('/register', uploadBukti,authUserController.register);
 router.post('/login', authUserController.login);
 router.put('/:id', uploadBukti ,authUserController.updateUser);
 router.delete('/:id', authUserController.deleteuser);

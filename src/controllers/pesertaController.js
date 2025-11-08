@@ -10,6 +10,7 @@ const getAllPeserta = async (req, res) => {
                 pelatihan : true, bidang : true,  user: true, // opsional kalau mau tahu input oleh siapa
         pesertaSertifikat: {
           include: {
+             
             sertifikat: true, // ambil data sertifikasi dari relasi perantara
           },
             },
@@ -212,6 +213,39 @@ const tambahPeserta = async (req, res) => {
 
 
 
+const getPesertaByQ = async (req, res) => {
+  try {
+    const { q } = req.query;
+    const keyword = q?.toLowerCase() || "";
+
+    const semuaPeserta = await prisma.peserta.findMany({
+      include: {
+        pelatihan: true,
+        user: true,
+        pesertaSertifikat: {
+          include: {
+            sertifikat: true, // ⬅ WAJIB UNTUK AMBIL PDF!
+          },
+        },
+      },
+    });
+
+    const peserta = semuaPeserta.filter(p =>
+      p.nama_peserta.toLowerCase().includes(keyword)
+    );
+
+    res.json({ data: peserta });
+  } catch (error) {
+    console.error("❌ ERROR FETCHING PESERTA:", error);
+    res.status(500).json({
+      message: "Gagal mengambil data peserta",
+      error: error.message,
+    });
+  }
+};
+
+
+
 // const tambahPeserta = async (req, res) => {
 //   try {
 //     const { id_user, id_bidang, id_pelatihan, bukti_pembayaran, peserta } = req.body;
@@ -256,5 +290,6 @@ module.exports = {
     createPeserta,
     updatePeserta,
     deletePeserta,
-    tambahPeserta
+    tambahPeserta,
+    getPesertaByQ
 };

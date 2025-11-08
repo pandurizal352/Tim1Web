@@ -19,7 +19,7 @@ model User {
   id                Int        @id @default(autoincrement())
   nama_institusi    String
   email_perusahaan  String     @unique
-  telpn_perusahaan  Int      
+  telpn_perusahaan  String       
   password          String
   alamat            String
   posisi            String
@@ -63,8 +63,9 @@ model Bidang {
 
 model Pelatihan {
   id             Int          @id @default(autoincrement())
-  biaya          Int
-  jangka_waktu   String // udah
+  // biaya          Int
+  biaya            Decimal @db.Decimal(20, 2)
+  jangka_waktu   String 
   nama_pelatihan String
 
   id_bidang      Int?

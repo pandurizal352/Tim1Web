@@ -5,9 +5,12 @@ const prisma = require("../config/utils");
 const getAllBidangs = async (req, res) => {
   try {
     const bidangs = await prisma.bidang.findMany({
-      include: {
-        pelatihan: true, // relasi ke Pelatihan
-        peserta: true, // relasi ke Peserta
+     include: {
+        pelatihan: {
+          include: {
+            peserta: true, // pastikan relasi ini sesuai dengan nama model di schema
+          },
+        },
       },
     });
     return res.json(bidangs);

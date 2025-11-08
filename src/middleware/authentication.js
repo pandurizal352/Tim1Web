@@ -20,7 +20,7 @@ module.exports = function auth(req, res, next) {
         jwt.verify(token, jwtSecret, (err, decoded) => {
             if (err) return res.status(401).json({ message: 'Invalid token' });
             // Simpan payload user pada req.user untuk controller
-            req.user = { id_user: decoded.id_user, email_institusi: decoded.email_institusi, posisi: decoded.posisi };
+            req.user = { id_user: decoded.id_user,nama_institusi: decoded.nama_institusi, email_institusi: decoded.email_institusi, posisi: decoded.posisi };
             next();
         });
     } catch (err) {

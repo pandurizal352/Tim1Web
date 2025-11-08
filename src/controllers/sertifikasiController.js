@@ -159,11 +159,11 @@ const createSertifikasi = async (req, res) => {
 };
 
 // UPDATE
+
 const updateSertifikasi = async (req, res) => {
   try {
     const id = parseInt(req.params.id);
     const { tanggal_dan_bulan, id_pelatihan } = req.body;
-    const data = {};
 
     // Cari data lama
     const existing = await prisma.sertifikasi.findUnique({ where: { id } });
@@ -171,32 +171,51 @@ const updateSertifikasi = async (req, res) => {
       return res.status(404).json({ message: "Sertifikasi tidak ditemukan" });
     }
 
+    const data = {};
+
     // Jika ada file baru
     if (req.file) {
-      const oldPath = path.join(__dirname, "../uploads", existing.nama_dokumen);
+      // Path yang lebih reliable menggunakan path.resolve atau process.cwd()
+      const oldPath = path.join(process.cwd(), "uploads/sertifikasi", existing.nama_dokumen);
+      
+      console.log("=== DEBUG FILE DELETION ===");
+      console.log("Nama file lama dari DB:", existing.nama_dokumen);
+      console.log("Path lengkap file lama:", oldPath);
+      console.log("File exists?", fs.existsSync(oldPath));
+      
+      // Hapus file lama jika ada
       if (fs.existsSync(oldPath)) {
-        fs.unlinkSync(oldPath); // hapus file lama
+        try {
+          fs.unlinkSync(oldPath);
+          console.log("✅ File lama berhasil dihapus");
+        } catch (err) {
+          console.error("❌ Error saat hapus file:", err);
+          // Tidak return error, tetap lanjut update
+        }
+      } else {
+        console.log("⚠️ File lama tidak ditemukan di path:", oldPath);
       }
-
-      data.nama_dokumen = req.file.filename; // ganti dengan file baru
+      
+      data.nama_dokumen = req.file.filename; // simpan nama file baru
+      console.log("File baru yang akan disimpan:", req.file.filename);
     }
 
-    // Jika tanggal diubah
+    // Update tanggal
     if (tanggal_dan_bulan) {
       const date = new Date(tanggal_dan_bulan);
       if (isNaN(date)) {
-        return res
-          .status(400)
-          .json({ message: "Format tanggal tidak valid. Gunakan format YYYY-MM-DD." });
+        return res.status(400).json({ message: "Format tanggal tidak valid" });
       }
       date.setHours(date.getHours() + 7);
       data.tanggal_dan_bulan = date;
     }
 
+    // Update pelatihan
     if (id_pelatihan) {
       data.id_pelatihan = parseInt(id_pelatihan);
     }
 
+    // Update di database
     const updated = await prisma.sertifikasi.update({
       where: { id },
       data,
@@ -205,9 +224,110 @@ const updateSertifikasi = async (req, res) => {
     res.json(updated);
   } catch (error) {
     console.error(error);
-    res.status(400).json({ message: error.message });
+    res.status(500).json({ message: "Gagal update sertifikasi", error: error.message });
   }
 };
+
+
+const deleteSertifikasi = async (req, res) => {
+  try {
+    const id = parseInt(req.params.id);
+    
+    // 1. Ambil data sertifikasi dulu untuk tahu nama file-nya
+    const existing = await prisma.sertifikasi.findUnique({ 
+      where: { id } 
+    });
+    
+    if (!existing) {
+      return res.status(404).json({ message: "Certificate not found" });
+    }
+    
+    // 2. Hapus file PDF-nya dari filesystem
+    if (existing.nama_dokumen) {
+      const filePath = path.join(process.cwd(), "uploads/sertifikasi", existing.nama_dokumen);
+      
+      console.log("=== DELETE FILE ===");
+      console.log("Trying to delete:", filePath);
+      
+      if (fs.existsSync(filePath)) {
+        try {
+          fs.unlinkSync(filePath);
+          console.log(" File deleted successfully");
+        } catch (err) {
+          console.error(" Failed to delete file:", err);
+          // Tetap lanjut hapus data meskipun file gagal dihapus
+        }
+      } else {
+        console.log("⚠️ File not found, skipping deletion");
+      }
+    }
+    
+    // 3. Baru hapus data dari database
+    await prisma.sertifikasi.delete({ where: { id } });
+    
+    return res.json({ 
+      message: "Sertifikasi dan file berhasil dihapus" 
+    });
+    
+  } catch (error) {
+    console.error(error);
+    if (error.code === "P2025") {
+      return res.status(404).json({ message: "Certificate not found" });
+    }
+    return res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+
+
+// const updateSertifikasi = async (req, res) => {
+//   try {
+//     const id = parseInt(req.params.id);
+//     const { tanggal_dan_bulan, id_pelatihan } = req.body;
+//     const data = {};
+
+//     // Cari data lama
+//     const existing = await prisma.sertifikasi.findUnique({ where: { id } });
+//     if (!existing) {
+//       return res.status(404).json({ message: "Sertifikasi tidak ditemukan" });
+//     }
+
+//     // Jika ada file baru
+//     if (req.file) {
+//       const oldPath = path.join(__dirname, "../uploads/sertifikasi", existing.nama_dokumen);
+//       if (fs.existsSync(oldPath)) {
+//         fs.unlinkSync(oldPath); // hapus file lama
+//       }
+
+//       data.nama_dokumen = req.file.filename; // ganti dengan file baru
+//     }
+
+//     // Jika tanggal diubah
+//     if (tanggal_dan_bulan) {
+//       const date = new Date(tanggal_dan_bulan);
+//       if (isNaN(date)) {
+//         return res
+//           .status(400)
+//           .json({ message: "Format tanggal tidak valid. Gunakan format YYYY-MM-DD." });
+//       }
+//       date.setHours(date.getHours() + 7);
+//       data.tanggal_dan_bulan = date;
+//     }
+
+//     if (id_pelatihan) {
+//       data.id_pelatihan = parseInt(id_pelatihan);
+//     }
+
+//     const updated = await prisma.sertifikasi.update({
+//       where: { id },
+//       data,
+//     });
+
+//     res.json(updated);
+//   } catch (error) {
+//     console.error(error);
+//     res.status(400).json({ message: error.message });
+//   }
+// };
 
 
 // const updateSertifikasi = async (req, res) => {
@@ -255,19 +375,19 @@ const updateSertifikasi = async (req, res) => {
 // };
 
 // DELETE
-const deleteSertifikasi = async (req, res) => {
-  try {
-    const id = parseInt(req.params.id);
-    await prisma.sertifikasi.delete({ where: { id } });
-    return res.json({ message: "sertifikasi deleted" });
-  } catch (error) {
-    console.error(error);
-    if (error.code === "P2025") {
-      return res.status(404).json({ message: "Certificate not found" });
-    }
-    return res.status(500).json({ message: "Internal Server Error" });
-  }
-};
+// const deleteSertifikasi = async (req, res) => {
+//   try {
+//     const id = parseInt(req.params.id);
+//     await prisma.sertifikasi.delete({ where: { id } });
+//     return res.json({ message: "sertifikasi deleted" });
+//   } catch (error) {
+//     console.error(error);
+//     if (error.code === "P2025") {
+//       return res.status(404).json({ message: "Certificate not found" });
+//     }
+//     return res.status(500).json({ message: "Internal Server Error" });
+//   }
+// };
 
 module.exports = {
   getAllSertifikasi,
