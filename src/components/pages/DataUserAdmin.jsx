@@ -15,8 +15,8 @@ export default function User() {
     password: "",
     alamat: "",
     posisi: "",
-    status_pembayaran: "",
-    bukti_pembayaran: null,
+    // status_pembayaran: "",
+    // bukti_pembayaran: null,
   });
   const [selectedUser, setSelectedUser] = useState(null);
 
@@ -63,8 +63,8 @@ export default function User() {
           password: "",
           alamat: "",
           posisi: "",
-          status_pembayaran: "",
-          bukti_pembayaran: null,
+          // status_pembayaran: "",
+          // bukti_pembayaran: null,
         });
         fetchData();
       })
@@ -73,7 +73,9 @@ export default function User() {
         const modalEl = document.getElementById("tambahModal");
         const modal = Modal.getOrCreateInstance(modalEl);
         modal.hide();
-        document.querySelectorAll(".modal-backdrop").forEach((bd) => bd.remove());
+        document
+          .querySelectorAll(".modal-backdrop")
+          .forEach((bd) => bd.remove());
       });
   };
 
@@ -98,9 +100,13 @@ export default function User() {
       .then(() => fetchData())
       .catch((err) => console.error("Gagal update:", err))
       .finally(() => {
-        const modal = Modal.getOrCreateInstance(document.getElementById("editModal"));
+        const modal = Modal.getOrCreateInstance(
+          document.getElementById("editModal")
+        );
         modal.hide();
-        document.querySelectorAll(".modal-backdrop").forEach((bd) => bd.remove());
+        document
+          .querySelectorAll(".modal-backdrop")
+          .forEach((bd) => bd.remove());
       });
   };
 
@@ -141,8 +147,8 @@ export default function User() {
             {/* <th>Telepon</th>
             <th>Alamat</th> */}
             <th>Posisi</th>
-            <th>Status Pembayaran</th>
-            <th>Bukti Pembayaran</th>
+            {/* <th>Status Pembayaran</th>
+            <th>Bukti Pembayaran</th> */}
             <th>Aksi</th>
           </tr>
         </thead>
@@ -155,8 +161,8 @@ export default function User() {
               {/* <td>{u.telpn_perusahaan}</td>
               <td>{u.alamat}</td> */}
               <td>{u.posisi}</td>
-              <td>{u.status_pembayaran || "-"}</td>
-              <td>
+              {/* <td>{u.status_pembayaran || "-"}</td> */}
+              {/* <td>
                 {u.bukti_pembayaran ? (
                         <a
                         href={`http://localhost:3000/uploads/bukti_pembayaran/${u.bukti_pembayaran}`}
@@ -173,9 +179,9 @@ export default function User() {
                 ) : (
                   "-"
                 )}
-              </td>
+              </td> */}
               <td>
-                 <button
+                <button
                   className="btn btn-warning btn-sm me-2"
                   onClick={() => navigate(`/edit-datauser/${u.id}`)}
                 >
@@ -193,102 +199,119 @@ export default function User() {
         </tbody>
       </table>
 
-{/* Modal Tambah */}
-<div className="modal fade" id="tambahModal" tabIndex="-1" aria-hidden="true">
-  <div className="modal-dialog">
-    <div className="modal-content">
-      <form onSubmit={handleSubmit} encType="multipart/form-data">
-        <div className="modal-header">
-          <h5 className="modal-title">Tambah User</h5>
-          <button type="button" className="btn-close" data-bs-dismiss="modal"></button>
-        </div>
-        <div className="modal-body">
-          {[
-            ["nama_institusi", "Nama Institusi", "text"],
-            ["email_perusahaan", "Email", "email"],
-            ["telpn_perusahaan", "Telepon", "number"],
-            ["password", "Password", "password"],
-            ["alamat", "Alamat", "text"],
-          ].map(([key, label, type]) => (
-            <div className="form-floating mb-3" key={key}>
-              <input
-                type={type}
-                className="form-control text-black"
-                placeholder={label}
-                name={key}
-                value={formData[key]}
-                onChange={handleChange}
-                required
-              />
-              <label>{label}</label>
-            </div>
-          ))}
+      {/* Modal Tambah */}
+      <div
+        className="modal fade"
+        id="tambahModal"
+        tabIndex="-1"
+        aria-hidden="true"
+      >
+        <div className="modal-dialog">
+          <div className="modal-content">
+            <form onSubmit={handleSubmit} encType="multipart/form-data">
+              <div className="modal-header">
+                <h5 className="modal-title">Tambah User</h5>
+                <button
+                  type="button"
+                  className="btn-close"
+                  data-bs-dismiss="modal"
+                ></button>
+              </div>
+              <div className="modal-body">
+                {[
+                  ["nama_institusi", "Nama Institusi", "text"],
+                  ["email_perusahaan", "Email", "email"],
+                  ["telpn_perusahaan", "Telepon", "number"],
+                  ["password", "Password", "password"],
+                  ["alamat", "Alamat", "text"],
+                ].map(([key, label, type]) => (
+                  <div className="form-floating mb-3" key={key}>
+                    <input
+                      type={type}
+                      className="form-control text-black"
+                      placeholder={label}
+                      name={key}
+                      value={formData[key]}
+                      onChange={handleChange}
+                      required
+                    />
+                    <label>{label}</label>
+                  </div>
+                ))}
 
-          {/* Dropdown Posisi */}
-          <div className="mb-3">
-            <label className="form-label fw-semibold">Posisi</label>
-            <select
-              className="form-select text-black"
-              name="posisi"
-              value={formData.posisi}
-              onChange={handleChange}
-              required
-            >
-              <option value="">-- Pilih Posisi --</option>
-              <option value="admin">Admin</option>
-              <option value="user">User</option>
-            </select>
+                {/* Dropdown Posisi */}
+                <div className="mb-3">
+                  <label className="form-label fw-semibold">Posisi</label>
+                  <select
+                    className="form-select text-black"
+                    name="posisi"
+                    value={formData.posisi}
+                    onChange={handleChange}
+                    required
+                  >
+                    <option value="">-- Pilih Posisi --</option>
+                    <option value="admin">Admin</option>
+                    <option value="user">User</option>
+                  </select>
+                </div>
+
+                {/* Dropdown Status Pembayaran */}
+                {/* <div className="mb-3">
+                  <label className="form-label fw-semibold">
+                    Status Pembayaran
+                  </label>
+                  <select
+                    className="form-select text-black"
+                    name="status_pembayaran"
+                    value={formData.status_pembayaran}
+                    onChange={handleChange}
+                  >
+                    <option value="">-- Pilih Status --</option>
+                    <option value="lunas">Lunas</option>
+                    <option value="belum lunas">Belum Lunas</option>
+                  </select>
+                </div> */}
+
+                {/* Input Bukti Pembayaran
+                <div className="mb-3">
+                  <label
+                    htmlFor="bukti_pembayaran_tambah"
+                    className="form-label fw-semibold"
+                  >
+                    Bukti Pembayaran (Foto)
+                  </label>
+                  <input
+                    type="file"
+                    id="bukti_pembayaran_tambah"
+                    name="bukti_pembayaran"
+                    className="form-control text-black"
+                    onChange={handleChange}
+                    accept="image/*"
+                    required
+                  />
+                </div> */}
+              </div>
+
+              <div className="modal-footer">
+                <button
+                  type="button"
+                  className="btn btn-secondary"
+                  data-bs-dismiss="modal"
+                >
+                  Tutup
+                </button>
+                <button type="submit" className="btn btn-primary">
+                  Simpan
+                </button>
+              </div>
+            </form>
           </div>
-
-          {/* Dropdown Status Pembayaran */}
-          <div className="mb-3">
-            <label className="form-label fw-semibold">Status Pembayaran</label>
-            <select
-              className="form-select text-black"
-              name="status_pembayaran"
-              value={formData.status_pembayaran}
-              onChange={handleChange}
-            >
-              <option value="">-- Pilih Status --</option>
-              <option value="lunas">Lunas</option>
-              <option value="belum lunas">Belum Lunas</option>
-            </select>
-          </div>
-
-          {/* Input Bukti Pembayaran */}
-          <div className="mb-3">
-  <label htmlFor="bukti_pembayaran_tambah" className="form-label fw-semibold">
-    Bukti Pembayaran (Foto)
-  </label>
-  <input
-    type="file"
-    id="bukti_pembayaran_tambah"
-    name="bukti_pembayaran"
-    className="form-control text-black"
-    onChange={handleChange}  
-    accept="image/*"
-    required
-  />
-</div>
-
         </div>
+      </div>
 
-        <div className="modal-footer">
-          <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">
-            Tutup
-          </button>
-          <button type="submit" className="btn btn-primary">
-            Simpan
-          </button>
-        </div>
-      </form>
-    </div>
-  </div>
-</div>
+      {/* Modal Edit */}
 
-{/* Modal Edit */}
-
-{/* <div className="modal fade" id="editModal" tabIndex="-1" aria-hidden="true">
+      {/* <div className="modal fade" id="editModal" tabIndex="-1" aria-hidden="true">
   <div className="modal-dialog">
     <div className="modal-content">
       {selectedUser && (
@@ -387,10 +410,7 @@ export default function User() {
       )}
     </div>
   </div>
-</div> */
-
-}
-
+</div> */}
     </div>
   );
 }

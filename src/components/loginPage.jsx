@@ -27,7 +27,7 @@ const LoginPage = () => {
       alert("Login berhasil!");
 
       // Arahkan sesuai posisi user
-      if (user.posisi === "admin") {
+      if (user.posisi === "Admin" || user.posisi === "admin") {
         navigate("/admin");
       } else {
         navigate("/");

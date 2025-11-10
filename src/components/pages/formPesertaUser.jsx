@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { jwtDecode } from "jwt-decode";
 
 export default function FormPeserta() {
@@ -14,6 +14,7 @@ export default function FormPeserta() {
   const [id_Pelatihan, setId_Pelatihan] = useState("");
   const [id_Bidang, setId_Bidang] = useState("");
   const [uploadedFile, setUploadedFile] = useState(null);
+  const fileInputRef = useRef(null);
   const [loading, setLoading] = useState(false);
 
   // 🔥 state untuk biaya
@@ -155,6 +156,7 @@ export default function FormPeserta() {
         setId_Pelatihan("");
         setUploadedFile(null);
         setTotalBiaya(0);
+        fileInputRef.current.value = null;
       } else {
         alert("❌ Gagal menambahkan peserta: " + (result.message || "Unknown error"));
       }
@@ -225,7 +227,7 @@ export default function FormPeserta() {
             {/* Upload File */}
             <div className="mb-3">
               <label>Upload File</label>
-              <input type="file" className="form-control" onChange={handleFileChange} />
+              <input type="file" className="form-control" ref={fileInputRef} onChange={handleFileChange} />
               {uploadedFile && <small className="text-muted">File: {uploadedFile.name}</small>}
             </div>
 

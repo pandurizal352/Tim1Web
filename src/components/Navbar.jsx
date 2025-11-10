@@ -20,8 +20,9 @@ export default function Navbar() {
     width="40"
     height="40"
     className="me-2 rounded-circle"
+    
   />
-  Admin Panel
+  <p style={{color: "#F9F3EF", alignItems: "center"}}>Admin Panel</p>
 </a>
 
 
@@ -39,29 +40,29 @@ export default function Navbar() {
 
         <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
           <div className="navbar-nav">
-            <Link className="nav-link" to="/admin">
+            <Link className="nav-link" to="/admin" style={{color: "#F9F3EF"}}>
               Beranda
             </Link>
-            <Link className="nav-link" to="/bidang">
+            <Link className="nav-link" to="/bidang" style={{color: "#F9F3EF"}}>
               Bidang
             </Link>
-            <Link className="nav-link" to="/pelatihan">
+            <Link className="nav-link" to="/pelatihan" style={{color: "#F9F3EF"}}>
               Pelatihan
             </Link>
-            <Link className="nav-link" to="/sertifikat">
+            <Link className="nav-link" to="/sertifikat" style={{color: "#F9F3EF"}}>
               Sertifikat
             </Link>
-             <Link className="nav-link" to="/peserta">
+             <Link className="nav-link" to="/peserta" style={{color: "#F9F3EF"}}>
               Data Peserta
             </Link>
-             <Link className="nav-link" to="/pivot">
-              pivot
+             <Link className="nav-link" to="/pivot" style={{color: "#F9F3EF"}}>
+              Pivot
             </Link>
-              <Link className="nav-link" to="/DataUser">
+              <Link className="nav-link" to="/DataUser" style={{color: "#F9F3EF"}}>
               Data User
             </Link>
             {/* Link ke halaman user */}
-            <Link className="nav-link" to="/">
+            <Link className="nav-link" to="/" style={{color: "#F9F3EF"}}>
               Halaman User
             </Link>
           </div>

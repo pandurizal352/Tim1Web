@@ -59,20 +59,29 @@ export default function NavbarUser() {
 
           {/* Menu kiri */}
           <div className="navbar-nav me-auto gap-3">
-            <Link className="nav-link navText fw-semibold" to="/">
+            <Link className={`nav-link navText ${
+                location.pathname === "/" ? "text-light fw-semibold" : ""
+              }`} 
+              to="/">
               Beranda
             </Link>
 
-            <Link className="nav-link navText fw-semibold" to="/pesertaUser">
+            <Link className={`nav-link navText ${
+                location.pathname === "/pesertaUser" ? "text-light fw-semibold" : ""
+              }`} to="/pesertaUser">
               Peserta
             </Link>
 
-            <Link className="nav-link navText fw-semibold" to="/tentang-kami">
+            <Link className={`nav-link navText ${
+                location.pathname === "/tentang-kami" ? "text-light fw-semibold" : ""
+              }`} to="/tentang-kami">
               Tentang Kami
             </Link>
 
             {isLoggedIn && (
-              <Link className="nav-link navText fw-semibold" to="/daftar">
+              <Link className={`nav-link navText ${
+                location.pathname === "/daftar" ? "text-light fw-semibold" : ""
+              }`} to="/daftar">
                 Daftar
               </Link>
             )}

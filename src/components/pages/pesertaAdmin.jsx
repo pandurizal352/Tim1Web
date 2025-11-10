@@ -116,7 +116,7 @@ export default function Peserta() {
         fetchData();
         alert("data berhasil di tambah");
       })
-      
+
       .catch((error) => console.error("Gagal menambahkan data:", error))
       .finally(() => {
         const modalEl = document.getElementById("exampleModal");
@@ -128,12 +128,12 @@ export default function Peserta() {
       });
   };
 
-    const handleDetail = (peserta) => {
-  setSelectedPeserta(peserta);
-  const modalEl = document.getElementById("ModalDetail");
-  const modalInstance = Modal.getOrCreateInstance(modalEl);
-  modalInstance.show();
-};
+  const handleDetail = (peserta) => {
+    setSelectedPeserta(peserta);
+    const modalEl = document.getElementById("ModalDetail");
+    const modalInstance = Modal.getOrCreateInstance(modalEl);
+    modalInstance.show();
+  };
 
   if (loading) {
     return (
@@ -142,6 +142,32 @@ export default function Peserta() {
       </div>
     );
   }
+
+  const handleKonfirmasi = async (id) => {
+  if (!window.confirm("Yakin ingin konfirmasi pembayaran peserta ini?")) return;
+
+  try {
+    const response = await fetch(`http://localhost:3000/api/peserta/konfirmasi/${id}`, {
+      method: "PUT",
+    });
+
+    if (!response.ok) throw new Error("Gagal konfirmasi pembayaran");
+
+    alert("Pembayaran berhasil dikonfirmasi!");
+
+    // tutup modal
+    const modalEl = document.getElementById("ModalDetail");
+    const modalInstance = Modal.getOrCreateInstance(modalEl);
+    modalInstance.hide();
+
+    fetchData(); // refresh data peserta
+  } catch (error) {
+    console.error(error);
+    alert("Terjadi kesalahan saat konfirmasi pembayaran");
+  }
+};
+
+
 
   return (
     <>
@@ -165,6 +191,8 @@ export default function Peserta() {
                   <th>No</th>
                   <th>Nama Peserta</th>
                   <th>Nama Instansi</th>
+                  <th>Status Pembayaran</th>
+                  {/* <th>Bukti Pembayaran</th> */}
                   <th>Aksi</th>
                 </tr>
               </thead>
@@ -174,6 +202,25 @@ export default function Peserta() {
                     <td>{index + 1}</td>
                     <td>{peserta.nama_peserta}</td>
                     <td>{peserta.user?.nama_institusi || "-"}</td>
+                    <td>{peserta.status_pembayaran || "-"}</td>
+                    {/* <td>
+                      {peserta.bukti_pembayaran ? (
+                        <a
+                          href={`http://localhost:3000/uploads/bukti_pembayaran/${peserta.bukti_pembayaran}`}
+                          target="_blank"
+                          rel="noreferrer"
+                        >
+                          <img
+                            src={`http://localhost:3000/uploads/bukti_pembayaran/${peserta.bukti_pembayaran}`}
+                            alt="Bukti"
+                            width="70"
+                            className="rounded"
+                          />
+                        </a>
+                      ) : (
+                        "-"
+                      )}
+                    </td> */}
                     <td>
                       <button
                         className="btn btn-primary btn-sm me-2"
@@ -181,7 +228,7 @@ export default function Peserta() {
                       >
                         Detail
                       </button>
-                       {/* <button
+                      {/* <button
                         className="btn btn-primary btn-sm me-2"
                         data-bs-toggle="modal"
                         data-bs-target="#ModalDetail"
@@ -344,6 +391,25 @@ export default function Peserta() {
                 </div>
               </div>
 
+              {/* Input Bukti Pembayaran */}
+              <div className="mb-3">
+                <label
+                  htmlFor="bukti_pembayaran_tambah"
+                  className="form-label fw-semibold"
+                >
+                  Bukti Pembayaran (Foto)
+                </label>
+                <input
+                  type="file"
+                  id="bukti_pembayaran_tambah"
+                  name="bukti_pembayaran"
+                  className="form-control text-black"
+                  onChange={handleSubmit}
+                  accept="image/*"
+                  required
+                />
+              </div>
+
               <div className="modal-footer">
                 <button
                   type="button"
@@ -360,79 +426,106 @@ export default function Peserta() {
           </div>
         </div>
       </div>
-            {/* Modal detail data peserta */}
+
+      {/* Modal detail data peserta */}
       <div
-  className="modal fade"
-  id="ModalDetail"
-  tabIndex="-1"
-  aria-labelledby="exampleModalLabel"
-  aria-hidden="true"
->
-  <div className="modal-dialog">
-    <div className="modal-content">
-      <div className="modal-header">
-        <h1 className="modal-title fs-5" id="exampleModalLabel">
-          Detail Data Peserta
-        </h1>
-        <button
-          type="button"
-          className="btn-close"
-          data-bs-dismiss="modal"
-          aria-label="Close"
-        ></button>
-      </div>
+        className="modal fade"
+        id="ModalDetail"
+        tabIndex="-1"
+        aria-labelledby="exampleModalLabel"
+        aria-hidden="true"
+      >
+        <div className="modal-dialog">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h1 className="modal-title fs-5" id="exampleModalLabel">
+                Detail Data Peserta
+              </h1>
+              <button
+                type="button"
+                className="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
 
-      <div className="modal-body">
-        {selectedPeserta ? (
-          <div>
-            <p><strong>Nama:</strong> {selectedPeserta.nama_peserta}</p>
-            <p>
-              <strong>Instansi:</strong>{" "}
-              {selectedPeserta.user?.nama_institusi || "-"}
-            </p>
-            <p><strong>Email:</strong> {selectedPeserta.email_peserta}</p>
-            <p><strong>Telepon:</strong> {selectedPeserta.telpn_peserta}</p>
-            <p><strong>Alamat:</strong> {selectedPeserta.alamat_peserta}</p>
-            <p>
-              <strong>Pelatihan:</strong>{" "}
-              {selectedPeserta.pelatihan?.nama_pelatihan || "-"}
-            </p>
+            <div className="modal-body">
+              {selectedPeserta ? (
+                <div>
+                  <p>
+                    <strong>Nama:</strong> {selectedPeserta.nama_peserta}
+                  </p>
+                  <p>
+                    <strong>Instansi:</strong>{" "}
+                    {selectedPeserta.user?.nama_institusi || "-"}
+                  </p>
+                  <p>
+                    <strong>Email:</strong> {selectedPeserta.email_peserta}
+                  </p>
+                  <p>
+                    <strong>Telepon:</strong> {selectedPeserta.telpn_peserta}
+                  </p>
+                  <p>
+                    <strong>Alamat:</strong> {selectedPeserta.alamat_peserta}
+                  </p>
+                  <p>
+                    <strong>Pelatihan:</strong>{" "}
+                    {selectedPeserta.pelatihan?.nama_pelatihan || "-"}
+                  </p>
+                  <p>
+                    <strong>Status Pembayaran:</strong>{" "}
+                    {selectedPeserta.status_pembayaran || "-"}
+                  </p>
+                  <p>
+                    <strong>Bukti Pembayaran:</strong>
+                    <br />
+                    {selectedPeserta.bukti_pembayaran ? (
+                      <a
+                        href={`http://localhost:3000/uploads/bukti_pembayaran/${selectedPeserta.bukti_pembayaran}`}
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        <img
+                          src={`http://localhost:3000/uploads/bukti_pembayaran/${selectedPeserta.bukti_pembayaran}`}
+                          alt="Bukti Pembayaran"
+                          width="120"
+                          className="rounded mt-2"
+                        />
+                      </a>
+                    ) : (
+                      <span>Tidak ada bukti pembayaran</span>
+                    )}
+                  </p>
+                </div>
+              ) : (
+                <p>Memuat data...</p>
+              )}
+
+            </div>
+
+            <div className="modal-footer">
+              <button
+                  className="btn btn-success"
+                  onClick={() => handleKonfirmasi(selectedPeserta.id)}
+                  // disabled={selectedPeserta.user?.status_pembayaran === "sudah dibayar"}
+                >
+                  Konfirmasi Pembayaran
+                </button>
+
+              <button
+                type="button"
+                className="btn btn-secondary"
+                data-bs-dismiss="modal"
+              >
+                Tutup
+              </button>
+            </div>
           </div>
-        ) : (
-          <p>Memuat data...</p>
-        )}
+        </div>
       </div>
-
-      <div className="modal-footer">
-        <button
-          type="button"
-          className="btn btn-secondary"
-          data-bs-dismiss="modal"
-        >
-          Tutup
-        </button>
-      </div>
-    </div>
-  </div>
-</div>
-      
     </>
   );
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 // import { useEffect, useState } from "react";
 // import axios from "axios";

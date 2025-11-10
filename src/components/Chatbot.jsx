@@ -21,9 +21,9 @@ const Chatbot = () => {
         theme: {
           button: {
             backgroundColor: "#1B3C53",
-            right: 20,
-            bottom: 20,
-            size: 56,
+            size: window.innerWidth < 600 ? 48 : 56,
+            right: window.innerWidth < 600 ? 12 : 20,
+            bottom: window.innerWidth < 600 ? 12 : 20,
             dragAndDrop: true,
             iconColor: "white",
             customIconSrc: chatbotIcon,
@@ -52,11 +52,14 @@ const Chatbot = () => {
             titleAvatarSrc: chatbotIcon,
             welcomeMessage: "Halo! 👋 Ada yang bisa saya bantu hari ini?",
             backgroundColor: "#F4F4F4",
-            height: 520,
-            width: 420,
-            fontSize: 15,
-            starterPrompts: ["Apa itu pelatihan K3?", "berapa harga termurah pelatihan ini?"],
-            starterPromptFontSize: 14,
+            height: window.innerWidth < 800 ? 360 : 520,
+            width: window.innerWidth < 600 ? 210 : 420,
+            fontSize: window.innerWidth < 600 ? 13 : 15,
+            starterPrompts: [
+              "Apa itu pelatihan K3?",
+              "berapa harga termurah pelatihan ini?",
+            ],
+            starterPromptFontSize: window.innerWidth < 600 ? 12 : 14,
             clearChatOnReload: false,
             sourceDocsTitle: "Referensi:",
             renderHTML: true,
@@ -81,8 +84,7 @@ const Chatbot = () => {
               textColor: "#2C2C2C",
               sendButtonColor: "#1B3C53",
               maxChars: 100,
-              maxCharsWarningMessage:
-                "Maksimal 100 karakter ya.",
+              maxCharsWarningMessage: "Maksimal 100 karakter ya.",
               autoFocus: true,
               sendMessageSound: true,
               sendSoundLocation: "/sounds/send_message.mp3",
@@ -117,10 +119,6 @@ const Chatbot = () => {
 
 export default Chatbot;
 
-
-
-
-
 // import { useEffect } from "react";
 
 // const Chatbot = () => {
@@ -152,7 +150,7 @@ export default Chatbot;
 //               autoOpenOnMobile: false,
 //             },
 //           },
-  
+
 //           disclaimer: {
 //             title: "Disclaimer",
 //             message:
