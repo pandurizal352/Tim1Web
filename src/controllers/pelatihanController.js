@@ -44,6 +44,13 @@ const createPelatihan = async (req, res) => {
   try {
     const { biaya, jangka_waktu, nama_pelatihan, id_bidang } = req.body;
 
+    const existing = await prisma.pelatihan.findUnique({
+          where: { nama_pelatihan },
+        });
+        if (existing) {
+          return res.status(409).json({ message: "Nama pelatihan sudah ada!" });
+        }
+
     const pelatihan = await prisma.pelatihan.create({
       data: {
         // biaya: parseInt(biaya),
@@ -79,7 +86,12 @@ const updatePelatihan = async (req, res) => {
     const id = parseInt(req.params.id);
     const { biaya, jangka_waktu, nama_pelatihan, id_bidang } = req.body;
 
-
+    const existing = await prisma.pelatihan.findUnique({
+          where: { nama_pelatihan },
+        });
+        if (existing) {
+          return res.status(409).json({ message: "Nama pelatihan sudah ada!" });
+        }
 
     const data = {
       ...(biaya && { biaya: parseFloat(biaya) }),

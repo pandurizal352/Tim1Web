@@ -73,6 +73,13 @@ const createPeserta = async (req, res) => {
       data.pelatihan = { connect: { id: parseInt(id_pelatihan) } };
     }
 
+    const existing = await prisma.peserta.findUnique({
+          where: { email_peserta },
+        });
+        if (existing) {
+          return res.status(409).json({ message: "Email peserta sudah ada!" });
+        }
+
         const peserta = await prisma.peserta.create({
             data,
             include: { bidang: true,
@@ -92,6 +99,14 @@ const updatePeserta = async (req, res) => {
     try {
         const id = parseInt (req.params.id);
         const { nama_peserta, email_peserta, telpn_peserta, alamat_peserta, id_user, id_bidang,id_pelatihan } = req.body;
+
+        const existing = await prisma.peserta.findUnique({
+          where: { email_peserta },
+        });
+        if (existing) {
+          return res.status(409).json({ message: "Email peserta sudah ada!" });
+        }
+        
         const data = { 
       nama_peserta, 
       email_peserta, 

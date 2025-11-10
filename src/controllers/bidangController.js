@@ -5,7 +5,7 @@ const prisma = require("../config/utils");
 const getAllBidangs = async (req, res) => {
   try {
     const bidangs = await prisma.bidang.findMany({
-     include: {
+      include: {
         pelatihan: {
           include: {
             peserta: true, // pastikan relasi ini sesuai dengan nama model di schema
@@ -42,7 +42,7 @@ const getBidangById = async (req, res) => {
 // CREATE
 const createBidang = async (req, res) => {
   try {
-    const { nama_bidang} = req.body;
+    const { nama_bidang } = req.body;
 
     // siapkan data dasar
     const data = {
@@ -50,6 +50,13 @@ const createBidang = async (req, res) => {
       // daftar_pelatihan: daftar_pelatihan || null,
       //   id_peserta: id_peserta || null,
     };
+
+    const existing = await prisma.bidang.findUnique({
+      where: { nama_bidang },
+    });
+    if (existing) {
+      return res.status(409).json({ message: "Nama bidang sudah ada!" });
+    }
 
     // jika id_peserta disertakan, set relasinya
     // if (id_peserta !== undefined && id_peserta !== null) {
@@ -79,6 +86,13 @@ const updateBidang = async (req, res) => {
       nama_bidang,
       // daftar_pelatihan: daftar_pelatihan || null,
     };
+
+    const existing = await prisma.bidang.findUnique({
+      where: { nama_bidang },
+    });
+    if (existing) {
+      return res.status(409).json({ message: "Nama bidang sudah ada!" });
+    }
 
     // jika id_peserta dikirim, ubah relasinya
     // if ("id_peserta" in req.body) {
