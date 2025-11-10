@@ -160,8 +160,13 @@ export default function FormPeserta() {
       } else {
         alert("❌ Gagal menambahkan peserta: " + (result.message || "Unknown error"));
       }
-    } catch (err) {
-      alert("❌ Error: " + err.message);
+    } catch (error) {
+      if (error.response && error.response.status === 409) {
+          alert(error.response.data.message); // munculin alert kalo nama bidang duplikat
+        } else {
+          alert("Email peserta sudah ada.");
+          console.error(error);
+        }
     } finally {
       setLoading(false);
     }

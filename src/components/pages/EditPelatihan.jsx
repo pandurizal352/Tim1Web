@@ -40,7 +40,12 @@ export default function EditPelatihan() {
       })
 
       .catch((error) => {
-        console.log(error);
+        if (error.response && error.response.status === 409) {
+          alert(error.response.data.message); // munculin alert kalo nama bidang duplikat
+        } else {
+          alert("Nama pelatihan sudah ada.");
+          console.error(error);
+        }
       })
       .finally(() => {
         setLoading(false);

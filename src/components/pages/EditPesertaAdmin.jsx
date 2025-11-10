@@ -101,7 +101,12 @@ export default function EditPesertaAdmin() {
       alert("Data berhasil diupdate!");
       navigate("/peserta");
     } catch (error) {
-      console.error("Gagal mengupdate data:", error);
+      if (error.response && error.response.status === 409) {
+          alert(error.response.data.message); // munculin alert kalo nama bidang duplikat
+        } else {
+          alert("Email peserta sudah ada.");
+          console.error(error);
+        }
     }
   };
 

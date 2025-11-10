@@ -74,7 +74,14 @@ export default function Pelatihan() {
         setId_Bidang("");
         fetchData();
       })
-      .catch((error) => console.error("Gagal menambahkan data:", error))
+      .catch((error) => {
+        if (error.response && error.response.status === 409) {
+          alert(error.response.data.message); // munculin alert kalo nama bidang duplikat
+        } else {
+          alert("Nama Pelatihan sudah ada.");
+          console.error(error);
+        }
+      })
       .finally(() => {
         const modalEl = document.getElementById("exampleModal");
         const modalInstance = Modal.getOrCreateInstance(modalEl);

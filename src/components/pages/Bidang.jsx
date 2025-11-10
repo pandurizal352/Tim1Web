@@ -8,7 +8,7 @@ export default function Bidang() {
   const [bidangs, setBidangs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [nama_bidang, setNama_bidang] = useState("");
-   const [selectedBidang, setSelectedBidang] = useState(null);
+  const [selectedBidang, setSelectedBidang] = useState(null);
   // const [daftar_pelatihan, setDaftar_pelatihan] = useState("");
   const navigate = useNavigate();
 
@@ -64,7 +64,12 @@ export default function Bidang() {
         fetchData();
       })
       .catch((error) => {
-        console.error("Gagal menambahkan data:", error);
+        if (error.response && error.response.status === 409) {
+          alert(error.response.data.message); // munculin alert kalo nama bidang duplikat
+        } else {
+          alert("Nama bidang sudah ada.");
+          console.error(error);
+        }
       })
       .finally(() => {
         const modalEl = document.getElementById("exampleModal");
@@ -106,12 +111,12 @@ export default function Bidang() {
               Tambah Data
             </button>
 
-            <table className="table table-striped table-hover">
+            <table className="table table-striped table-hover text-center">
               <thead className="table-dark">
                 <tr>
                   <th>No</th>
                   <th>Nama Bidang</th>
-                  
+
                   {/* <th>Nama Peserta</th> */}
                   <th>Aksi</th>
                 </tr>
@@ -121,7 +126,6 @@ export default function Bidang() {
                   <tr key={bidang.id}>
                     <td>{index + 1}</td>
                     <td>{bidang.nama_bidang}</td>
-                    
 
                     {/* <td>{bidang.peserta?.nama_peserta || "-"}</td> */}
                     <td>
@@ -183,7 +187,6 @@ export default function Bidang() {
                   />
                   <label htmlFor="nama_bidang">Nama Bidang</label>
                 </div>
-            
               </div>
               <div className="modal-footer">
                 <button
@@ -202,62 +205,71 @@ export default function Bidang() {
         </div>
       </div>
 
-{/* Modal Detail */}
-<div className="modal fade" id="detailModal" tabIndex="-1" aria-hidden="true">
-  <div className="modal-dialog modal-lg">
-    <div className="modal-content">
-      {selectedBidang && (
-        <>
-          <div className="modal-header">
-            <h5 className="modal-title">
-              Detail Bidang: {selectedBidang.nama_bidang}
-            </h5>
-            <button type="button" className="btn-close" data-bs-dismiss="modal"></button>
-          </div>
-          <div className="modal-body">
-            <h6 className="fw-bold mb-3">Daftar Pelatihan:</h6>
-            {selectedBidang.pelatihan && selectedBidang.pelatihan.length > 0 ? (
-              <ul className="list-group">
-                {selectedBidang.pelatihan.map((p) => (
-                  <li key={p.id} className="list-group-item">
-                    <strong>{p.nama_pelatihan}</strong>
-                    {p.peserta && p.peserta.length > 0 ? (
-                      <ul className="mt-2">
-                        {p.peserta.map((s) => (
-                          <li key={s.id} className="text-secondary">
-                            {s.nama_peserta}
-                          </li>
-                        ))}
-                      </ul>
-                    ) : (
-                      <p className="text-muted ms-3">Tidak ada peserta.</p>
-                    )}
-                  </li>
-                ))}
-              </ul>
-            ) : (
-              <p className="text-muted">Tidak ada pelatihan untuk bidang ini.</p>
+      {/* Modal Detail */}
+      <div
+        className="modal fade"
+        id="detailModal"
+        tabIndex="-1"
+        aria-hidden="true"
+      >
+        <div className="modal-dialog modal-lg">
+          <div className="modal-content">
+            {selectedBidang && (
+              <>
+                <div className="modal-header">
+                  <h5 className="modal-title">
+                    Detail Bidang: {selectedBidang.nama_bidang}
+                  </h5>
+                  <button
+                    type="button"
+                    className="btn-close"
+                    data-bs-dismiss="modal"
+                  ></button>
+                </div>
+                <div className="modal-body">
+                  <h6 className="fw-bold mb-3">Daftar Pelatihan:</h6>
+                  {selectedBidang.pelatihan &&
+                  selectedBidang.pelatihan.length > 0 ? (
+                    <ul className="list-group">
+                      {selectedBidang.pelatihan.map((p) => (
+                        <li key={p.id} className="list-group-item">
+                          <strong>{p.nama_pelatihan}</strong>
+                          {p.peserta && p.peserta.length > 0 ? (
+                            <ul className="mt-2">
+                              {p.peserta.map((s) => (
+                                <li key={s.id} className="text-secondary">
+                                  {s.nama_peserta}
+                                </li>
+                              ))}
+                            </ul>
+                          ) : (
+                            <p className="text-muted ms-3">
+                              Tidak ada peserta.
+                            </p>
+                          )}
+                        </li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <p className="text-muted">
+                      Tidak ada pelatihan untuk bidang ini.
+                    </p>
+                  )}
+                </div>
+                <div className="modal-footer">
+                  <button
+                    type="button"
+                    className="btn btn-secondary"
+                    data-bs-dismiss="modal"
+                  >
+                    Tutup
+                  </button>
+                </div>
+              </>
             )}
           </div>
-          <div className="modal-footer">
-            <button
-              type="button"
-              className="btn btn-secondary"
-              data-bs-dismiss="modal"
-            >
-              Tutup
-            </button>
-          </div>
-        </>
-      )}
-    </div>
-  </div>
-</div>
-
+        </div>
+      </div>
     </>
   );
 }
-
-
-
-

@@ -37,7 +37,12 @@ export default function EditSiswa(){
 })
 
       .catch((error) => {
-        console.log(error);
+        if (error.response && error.response.status === 409) {
+          alert(error.response.data.message); // munculin alert kalo nama bidang duplikat
+        } else {
+          alert("Nama bidang sudah ada.");
+          console.error(error);
+        }
       })
       .finally(() => {
         setLoading(false);
