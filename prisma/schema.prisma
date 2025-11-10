@@ -23,7 +23,6 @@ model User {
   password          String
   alamat            String
   posisi            String
-  status_pembayaran String?
   bukti_pembayaran  String?
 
   peserta           Peserta[]
@@ -31,10 +30,12 @@ model User {
 
 model Peserta {
   id              Int       @id @default(autoincrement())
-  nama_peserta    String
-  email_peserta   String
-  telpn_peserta   String
-  alamat_peserta  String
+  nama_peserta      String
+  email_peserta     String
+  telpn_peserta     String
+  alamat_peserta    String
+  bukti_pembayaran  String?
+  status_pembayaran String?
 
   // Relasi ke User
   id_user         Int?

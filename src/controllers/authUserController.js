@@ -93,7 +93,8 @@ const deleteuser = async (req, res) => {
 const updateUser = async (req, res) => {
   try {
     const id = parseInt(req.params.id);
-    const { nama_institusi, email_perusahaan, telpn_perusahaan, alamat, password, status_pembayaran } = req.body;
+    const { nama_institusi, email_perusahaan, telpn_perusahaan, alamat, password, //status_pembayaran 
+    } = req.body;
     //mencoba di postman pake ini
     //  const body = req.body || {}; 
     // const { nama_institusi, email_perusahaan, telpn_perusahaan, alamat, password } = body;
@@ -111,15 +112,15 @@ const updateUser = async (req, res) => {
     }
 
     // Proses file baru
-    let bukti_pembayaran = existing.bukti_pembayaran;
-    if (req.file) {
-      // hapus file lama
-      if (existing.bukti_pembayaran) {
-        const oldPath = path.join("uploads/bukti_pembayaran", existing.bukti_pembayaran);
-        if (fs.existsSync(oldPath)) fs.unlinkSync(oldPath);
-      }
-      bukti_pembayaran = req.file.filename;
-    }
+    // let bukti_pembayaran = existing.bukti_pembayaran;
+    // if (req.file) {
+    //   // hapus file lama
+    //   if (existing.bukti_pembayaran) {
+    //     const oldPath = path.join("uploads/bukti_pembayaran", existing.bukti_pembayaran);
+    //     if (fs.existsSync(oldPath)) fs.unlinkSync(oldPath);
+    //   }
+    //   bukti_pembayaran = req.file.filename;
+    // }
 
     // Update data
     const updated = await prisma.user.update({
@@ -130,9 +131,9 @@ const updateUser = async (req, res) => {
         telpn_perusahaan: telpn_perusahaan ??  existing.telpn_perusahaan,
         alamat: alamat ?? existing.alamat,
         password: hashedPassword,
-        status_pembayaran: status_pembayaran ?? existing.status_pembayaran,
+        // status_pembayaran: status_pembayaran ?? existing.status_pembayaran,
         // status_pembayaran,
-        bukti_pembayaran,
+        // bukti_pembayaran,
       },
     });
 
@@ -249,7 +250,8 @@ const updateUser = async (req, res) => {
     // POST /api/institute/register
 const register = async (req, res, next) => {
   try {
-    const { email_perusahaan, password, nama_institusi, telpn_perusahaan, alamat, posisi, status_pembayaran } = req.body;
+    const { email_perusahaan, password, nama_institusi, telpn_perusahaan, alamat, posisi, //status_pembayaran 
+    } = req.body;
 
     // Validasi sederhana
     if (!email_perusahaan || !password || !nama_institusi || !posisi) {
@@ -283,7 +285,7 @@ const register = async (req, res, next) => {
         telpn_perusahaan: telpn_perusahaan || '',
         alamat: alamat || null,
         posisi,
-        status_pembayaran: status_pembayaran || 'belum_dibayar',
+        // status_pembayaran: status_pembayaran || 'belum_dibayar',
         bukti_pembayaran,
       },
     });
@@ -294,7 +296,7 @@ const register = async (req, res, next) => {
         id_user: newInstitute.id_user,
         email_perusahaan: newInstitute.email_perusahaan,
         nama_institusi: newInstitute.nama_institusi,
-        status_pembayaran: newInstitute.status_pembayaran,
+        // status_pembayaran: newInstitute.status_pembayaran,
         bukti_pembayaran: newInstitute.bukti_pembayaran,
       },
     });

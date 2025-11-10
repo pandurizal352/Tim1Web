@@ -162,45 +162,97 @@ const deletePeserta = async (req, res) => {
 }
 
 
+// const tambahPeserta = async (req, res) => {
+//   try {
+//     const { id_user, id_bidang, id_pelatihan } = req.body;
+//     const peserta = JSON.parse(req.body.peserta || "[]"); // penting! jika dikirim via multipart/form-data
+//     const bukti_pembayaran = req.file ? req.file.filename : null;
+
+//     // Validasi
+//     if (!id_user || !id_bidang || !id_pelatihan || peserta.length === 0) {
+//       return res.status(400).json({ message: "Data tidak lengkap." });
+//     }
+
+//     // 1️⃣ Update bukti pembayaran user (jika ada file)
+//     if (bukti_pembayaran) {
+//       await prisma.user.update({
+//         where: { id: parseInt(id_user) },
+//         data: { bukti_pembayaran },
+//       });
+//     }
+
+//     // 2️⃣ Tambah peserta secara batch
+//     const createdPeserta = await prisma.peserta.createMany({
+//       data: peserta.map((p) => ({
+//         nama_peserta: p.nama_peserta,
+//         email_peserta: p.email_peserta,
+//         // telpn_peserta: parseInt(p.telpn_peserta),
+//         telpn_peserta: p.telpn_peserta,
+//         // telpn_peserta: parseInt(p.telpn_peserta.startsWith("0") ? p.telpn_peserta.slice(1) : p.telpn_peserta),
+
+//         alamat_peserta: p.alamat_peserta,
+//         id_user: parseInt(id_user),
+//         id_bidang: parseInt(id_bidang),
+//         id_pelatihan: parseInt(id_pelatihan),
+//       })),
+//     });
+
+//     return res.status(201).json({
+//       message: "Data peserta berhasil ditambahkan.",
+//       total_ditambahkan: createdPeserta.count,
+//       bukti_pembayaran,
+//     });
+//   } catch (error) {
+//     console.error("Error tambahPeserta:", error);
+//     return res.status(500).json({
+//       message: "Terjadi kesalahan server.",
+//       error: error.message,
+//     });
+//   }
+// };
+
 const tambahPeserta = async (req, res) => {
   try {
     const { id_user, id_bidang, id_pelatihan } = req.body;
-    const peserta = JSON.parse(req.body.peserta || "[]"); // penting! jika dikirim via multipart/form-data
-    const bukti_pembayaran = req.file ? req.file.filename : null;
-
+    const peserta = JSON.parse(req.body.peserta || "[]"); // multipart/form-data
     // Validasi
     if (!id_user || !id_bidang || !id_pelatihan || peserta.length === 0) {
       return res.status(400).json({ message: "Data tidak lengkap." });
     }
 
-    // 1️⃣ Update bukti pembayaran user (jika ada file)
-    if (bukti_pembayaran) {
-      await prisma.user.update({
-        where: { id: parseInt(id_user) },
-        data: { bukti_pembayaran },
-      });
+    // Jika ada file, pindahkan dan beri nama unik
+    let buktiFileName = null;
+    if (req.file) {
+      const ext = path.extname(req.file.originalname || req.file.filename);
+      const timestamp = Date.now();
+      buktiFileName = `${id_user}_${timestamp}${ext}`;
+      const targetFolder = path.join(__dirname, "../../uploads/bukti_pembayaran");
+      if (!fs.existsSync(targetFolder)) fs.mkdirSync(targetFolder, { recursive: true });
+      const newPath = path.join(targetFolder, buktiFileName);
+      fs.renameSync(req.file.path, newPath);
     }
 
-    // 2️⃣ Tambah peserta secara batch
-    const createdPeserta = await prisma.peserta.createMany({
-      data: peserta.map((p) => ({
-        nama_peserta: p.nama_peserta,
-        email_peserta: p.email_peserta,
-        // telpn_peserta: parseInt(p.telpn_peserta),
-        telpn_peserta: p.telpn_peserta,
-        // telpn_peserta: parseInt(p.telpn_peserta.startsWith("0") ? p.telpn_peserta.slice(1) : p.telpn_peserta),
+    // Tambah peserta secara batch, sertakan bukti_pembayaran pada tiap row (boleh null)
+    const dataToInsert = peserta.map((p) => ({
+      nama_peserta: p.nama_peserta,
+      email_peserta: p.email_peserta,
+      telpn_peserta: p.telpn_peserta,
+      alamat_peserta: p.alamat_peserta,
+      id_user: parseInt(id_user),
+      id_bidang: parseInt(id_bidang),
+      id_pelatihan: parseInt(id_pelatihan),
+      bukti_pembayaran: buktiFileName, // ini per-peserta
+    }));
 
-        alamat_peserta: p.alamat_peserta,
-        id_user: parseInt(id_user),
-        id_bidang: parseInt(id_bidang),
-        id_pelatihan: parseInt(id_pelatihan),
-      })),
+    const createdPeserta = await prisma.peserta.createMany({
+      data: dataToInsert,
+      skipDuplicates: true // opsional: kalau mau skip yg duplikat unique index
     });
 
     return res.status(201).json({
       message: "Data peserta berhasil ditambahkan.",
       total_ditambahkan: createdPeserta.count,
-      bukti_pembayaran,
+      bukti_pembayaran: buktiFileName,
     });
   } catch (error) {
     console.error("Error tambahPeserta:", error);
@@ -210,7 +262,6 @@ const tambahPeserta = async (req, res) => {
     });
   }
 };
-
 
 
 const getPesertaByQ = async (req, res) => {
@@ -244,7 +295,125 @@ const getPesertaByQ = async (req, res) => {
   }
 };
 
+const konfirmasiPembayaran = async (req, res) => {
+  try {
+    const id = parseInt(req.params.id);
 
+    // Cari peserta berdasarkan ID
+    const peserta = await prisma.peserta.findUnique({
+      where: { id },
+    });
+
+    if (!peserta) return res.status(404).json({ message: "Peserta tidak ditemukan" });
+
+    // Hapus file bukti pembayaran peserta ini saja
+    if (peserta.bukti_pembayaran) {
+      const filePath = path.join(process.cwd(), "uploads", "bukti_pembayaran", peserta.bukti_pembayaran);
+      if (fs.existsSync(filePath)) fs.unlinkSync(filePath);
+    }
+
+    // Update peserta: hapus bukti dan set status pembayaran spesifik peserta
+    const updatedPeserta = await prisma.peserta.update({
+      where: { id },
+      data: {
+        bukti_pembayaran: null,
+        status_pembayaran: "Lunas", // ⬅ Hanya peserta ini
+      },
+    });
+
+    res.json({
+      message: `Pembayaran peserta "${updatedPeserta.nama_peserta}" dikonfirmasi`,
+      peserta: updatedPeserta,
+    });
+  } catch (error) {
+    console.error("❌ Error konfirmasi pembayaran:", error);
+    res.status(500).json({ message: "Gagal konfirmasi pembayaran", error: error.message });
+  }
+};
+
+
+// const konfirmasiPembayaran = async (req, res) => {
+//   try {
+//     const id = parseInt(req.params.id);
+
+//     // Cari peserta berdasarkan ID
+//     const peserta = await prisma.peserta.findUnique({
+//       where: { id },
+//       include: { user: true },
+//     });
+
+//     if (!peserta) return res.status(404).json({ message: "Peserta tidak ditemukan" });
+
+//     // Hapus file bukti pembayaran peserta ini saja
+//     if (peserta.bukti_pembayaran) {
+//       const filePath = path.join(process.cwd(), "uploads", "bukti_pembayaran", peserta.bukti_pembayaran);
+//       if (fs.existsSync(filePath)) fs.unlinkSync(filePath);
+//     }
+
+//     // Update peserta: hapus bukti dan set status pembayaran
+//     const updatedPeserta = await prisma.peserta.update({
+//       where: { id },
+//       data: {
+//         bukti_pembayaran: null,
+//         status_pembayaran: "sudah dibayar" // status sekarang spesifik peserta
+//       },
+//     });
+
+//     res.json({
+//       message: `Pembayaran untuk peserta "${updatedPeserta.nama_peserta}" dikonfirmasi`,
+//       peserta: updatedPeserta
+//     });
+//   } catch (error) {
+//     console.error("❌ Error konfirmasi pembayaran:", error);
+//     res.status(500).json({ message: "Gagal konfirmasi pembayaran", error: error.message });
+//   }
+// };
+
+
+// const konfirmasiPembayaran = async (req, res) => {
+//   try {
+//     const id = parseInt(req.params.id);
+
+//     // cari peserta berdasarkan ID
+//     const peserta = await prisma.peserta.findUnique({
+//       where: { id },
+//       include: { user: true },
+//     });
+
+//     if (!peserta) return res.status(404).json({ message: "Peserta tidak ditemukan" });
+
+//     // hapus file bukti pembayaran (kalau ada)
+//     if (peserta.bukti_pembayaran) {
+//       const filePath = path.join(
+//         process.cwd(),
+//         "uploads",
+//         "bukti_pembayaran",
+//         peserta.bukti_pembayaran
+//       );
+//       if (fs.existsSync(filePath)) {
+//         fs.unlinkSync(filePath);
+//       }
+//     }
+
+//     // update status user dan hapus bukti pembayaran
+//     await prisma.user.update({
+//       where: { id: peserta.id_user },
+//       data: {
+//         status_pembayaran: "sudah_dibayar",
+//       },
+//     });
+
+//     await prisma.peserta.update({
+//       where: { id },
+//       data: { bukti_pembayaran: null },
+//     });
+
+//     res.json({ message: "Pembayaran dikonfirmasi dan bukti dihapus" });
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).json({ message: "Gagal konfirmasi pembayaran" });
+//   }
+// };
 
 // const tambahPeserta = async (req, res) => {
 //   try {
@@ -291,5 +460,6 @@ module.exports = {
     updatePeserta,
     deletePeserta,
     tambahPeserta,
-    getPesertaByQ
+    getPesertaByQ,
+    konfirmasiPembayaran
 };
